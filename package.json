@@ -1,6 +1,8 @@
 {
   "name": "auto-dining",
   "version": "0.0.0",
+  "author": "Baraa Alkhatib",
+  "description": "Angular 10 based application to find and share customer reviews of restaurants",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
