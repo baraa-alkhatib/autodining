@@ -1,0 +1,49 @@
+<mat-toolbar color="primary">
+  <!-- Devide navbar into three flex boxes -->
+
+  <!-- Flex box 1 -->
+  <div fxFlex fxLayout fxLayoutAlign="start">
+    <!-- Show small menu icon button on the left side of the navbar when the screen size is very small -->
+    <div fxHide.gt-xs>
+      <!-- Toggle the menu button show/hide -->
+      <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
+    <!-- Site Logo -->
+    <div class="logo" fxHide.xs>
+      <!-- Go to main page when logo is clicked -->
+      <a routerLink="/home">AutoDining</a>
+    </div>
+  </div>
+
+  <!-- Flex box 2 -->
+  <div fxFlex fxLayout fxLayoutAlign="center" fxHide.xs>
+    <!-- TODO: <div>Search Bar</div> -->
+  </div>
+
+  <!-- Flex box 3 (hide in small screens) -->
+  <div fxFlex fxLayout fxLayoutAlign="end">
+    <!-- Devide this section of the navbar into 2 based on screen size-->
+    <div fxHide.xs>
+      <!-- Initiate a list of items aligned horizontely on this section of the navbar -->
+      <ul fxLayout fxLayoutGap="15px">
+        <!-- If user is not logged in show -->
+        <li *ngIf="true">
+          <button mat-flat-button (click)="onOpenLoginPopup()">
+            <mat-icon>login</mat-icon> Login
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div fxHide.gt-xs>
+      <!-- Toggle the filter bottom sheet button show/hide -->
+      <button mat-button (click)="onToggleFilter()" class="mat-accent">
+        <mat-icon>tune</mat-icon>
+        Filter
+      </button>
+    </div>
+  </div>
+</mat-toolbar>

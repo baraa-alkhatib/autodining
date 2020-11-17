@@ -1,0 +1,26 @@
+/*
+ * Make sure the height of the side navbar and the main content covers the whole page
+ */
+
+mat-sidenav-container,
+mat-sidenav-content,
+mat-sidenav {
+  height: 100%;
+}
+
+/*
+ * Make sure the width of the side navbar covers a minimum width
+ * for a better user experience in small screens
+ */
+
+mat-sidenav {
+  width: 250px;
+}
+
+/*
+ * Set up some padding for main
+ */
+
+main {
+  padding: 10px;
+}
