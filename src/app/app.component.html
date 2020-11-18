@@ -2,25 +2,23 @@
 <mat-sidenav-container>
   <!-- Side Navigation Content -->
   <mat-sidenav #sidenav role="navigation">
-    <!-- <app-sidenav-list -list (sidenavClose)="sidenav.close()"></app-sidenav-list> -->
+    <app-navigation-menu (sidenavClose)="sidenav.close()"></app-navigation-menu>
   </mat-sidenav>
 
   <!-- Main Content -->
   <mat-sidenav-content>
     <!-- Application Header -->
     <app-header
-      (sidenavToggle)="sidenav.toggle()"
-      (loginPopupOpen)="loginPopup.open()"
-      (filterBottomSheeToggle)="filterSheet.open()"
+      (toggleSidenav)="sidenav.toggle()"
+      (openLoginDialog)="onOpenLoginDialog()"
+      (toggleFilterBottomSheet)="filterSheet.open()"
+      class="header"
     ></app-header>
 
     <!-- Application Main Router Outlet -->
-    <main>
+    <main class="main">
       <router-outlet></router-outlet>
     </main>
-
-    <!-- Application Popup Login window -->
-    <app-login-window #loginPopup></app-login-window>
 
     <!-- Application Filter Bottom Sheet  -->
     <app-filter-bottom-sheet #filterSheet></app-filter-bottom-sheet>

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 @Component({
@@ -8,13 +8,15 @@ import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterComponent {
-  constructor(private _bottomSheetRef: MatBottomSheetRef<FilterComponent>) {}
+  constructor(@Optional() private _bottomSheetRef: MatBottomSheetRef<FilterComponent>) {}
 
   /**
    * Closes mat dialog if filter was opened in it
    * @memberof FilterListComponent
    */
   public close(): void {
-    this._bottomSheetRef.dismiss();
+    if (this._bottomSheetRef) {
+      this._bottomSheetRef.dismiss();
+    }
   }
 }

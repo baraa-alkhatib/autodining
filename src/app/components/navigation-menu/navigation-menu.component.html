@@ -1,0 +1,51 @@
+<mat-nav-list>
+  <!-- Home Route -->
+  <a mat-list-item routerLink="/home" routerLinkActive="route-active" (click)="onSidenavClose()">
+    <mat-icon>home</mat-icon> <span class="nav-caption">Home</span>
+  </a>
+
+  <!-- Users Route -->
+  <a mat-list-item routerLink="/users" routerLinkActive="route-active" (click)="onSidenavClose()">
+    <mat-icon>supervisor_account</mat-icon><span class="nav-caption">Users</span>
+  </a>
+
+  <!-- Restaurants Route -->
+  <a
+    mat-list-item
+    routerLink="/restrauants"
+    routerLinkActive="route-active"
+    (click)="onSidenavClose()"
+  >
+    <mat-icon>restaurant</mat-icon> <span class="nav-caption">Restaurants</span>
+  </a>
+
+  <!-- Favorite Restaurants Route -->
+  <a
+    mat-list-item
+    routerLink="/favorite"
+    routerLinkActive="route-active"
+    (click)="onSidenavClose()"
+  >
+    <mat-icon>favorite</mat-icon><span class="nav-caption">Favorite Restaurants</span>
+  </a>
+
+  <!-- Reviews Route -->
+  <a mat-list-item routerLink="/reviews" routerLinkActive="route-active" (click)="onSidenavClose()">
+    <mat-icon>rate_review</mat-icon><span class="nav-caption">Reviews</span>
+  </a>
+
+  <!-- User Reviews Route -->
+  <a
+    mat-list-item
+    routerLink="/my-reviews"
+    routerLinkActive="route-active"
+    (click)="onSidenavClose()"
+  >
+    <mat-icon>rate_review</mat-icon><span class="nav-caption">My Reviews</span>
+  </a>
+
+  <!-- User Settings Route -->
+  <a mat-list-item routerLink="settings" (click)="onSidenavClose()">
+    <mat-icon inline-icon>settings</mat-icon><span class="nav-caption">Settings</span>
+  </a>
+</mat-nav-list>

@@ -20,3 +20,13 @@ html,
 body {
   height: 100%;
 }
+
+/*
+ * Make sure the border is calculated with the width in all elements
+ */
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}

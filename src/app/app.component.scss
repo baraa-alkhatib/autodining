@@ -1,11 +1,13 @@
 /*
- * Make sure the height of the side navbar and the main content covers the whole page
+ * [1] Make the height of the side navbar and the main content cover the whole page
+ * [2] Hide the vertical scrollbar on overflow
  */
 
 mat-sidenav-container,
 mat-sidenav-content,
 mat-sidenav {
   height: 100%;
+  overflow: hidden;
 }
 
 /*
@@ -18,9 +20,29 @@ mat-sidenav {
 }
 
 /*
- * Set up some padding for main
+ * [1] Height covers the full page except for the room at the top made for the header
+ * [2] Set a scrollbar on y axis
+ * [3] Set the position to relative for [4]
+ * [4] Set a space for the header on top
+ * [5] Make sure to hide main behind all other elements
  */
 
-main {
-  padding: 10px;
+.main {
+  height: calc(100% - 64px); // [1]
+  overflow-y: scroll; // [2]
+  position: relative; // [3]
+  top: 64px; // [4]
+  z-index: -1; // [5]
+}
+
+/*
+ * Fix the header position on top
+ */
+
+.header {
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
 }

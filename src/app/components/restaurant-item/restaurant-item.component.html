@@ -1,0 +1,70 @@
+<div fxFlex.gt-sm="80" fxLayout="row" fxFlexAlign="end end" class="item">
+  <!-- Restaurant's Logo  -->
+  <div>
+    <div class="item__logo">
+      <a routerLink="/home">
+        <img src="{{ restaurant.imageUrl }}" class="item__logo__img" />
+      </a>
+    </div>
+  </div>
+
+  <!-- Restaurant's Information  -->
+  <div fxFlex="100" class="item-content">
+    <!-- Restaurant's Name -->
+    <div class="item__name-container">
+      <a class="item__name-container__name" routerLink="/home">{{ restaurant.name }}</a>
+    </div>
+
+    <!-- Restaurant's Star Rating and Number of Reviews -->
+    <div class="item__rating-container">
+      <!-- Number of rating -->
+      <span>{{ restaurant.rating }} </span>
+
+      <!-- Number of star rating -->
+      <span
+        ><app-star-rating
+          [rating]="restaurant.rating"
+          [starCount]="5"
+          [color]="'accent'"
+        ></app-star-rating
+      ></span>
+
+      <!-- Number of user reviews -->
+      <span> ({{ restaurant.reviewsNumber }})</span>
+    </div>
+
+    <!-- Restaurant's Address -->
+    <div class="item__address-container">{{ restaurant.address }}</div>
+
+    <!-- Restauran'ts Status open/closed -->
+    <div class="is-closed" [class.is-open]="restaurant.status === 'open'">
+      {{ restaurant.status }}
+    </div>
+
+    <!-- Divider at the bottom of restaurant's item element -->
+    <mat-divider class="item-divider"> </mat-divider>
+  </div>
+
+  <!-- Restaurant's Edit/Delete Options  -->
+  <div *ngIf="showOptions">
+    <!-- Options Menu Icon -->
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <!-- Options Menu -->
+    <mat-menu #menu="matMenu">
+      <!-- Edit -->
+      <button mat-menu-item (click)="onOpenEditDialog()">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+
+      <!-- Delete -->
+      <button mat-menu-item (click)="onOpenDeleteDialog()">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

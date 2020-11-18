@@ -1,0 +1,12 @@
+.nav-caption {
+  margin-left: 10px;
+}
+
+/**
+ * Give nice background and border-left colors that fit the theme to the currently active route
+ */
+
+.route-active {
+  background-color: rgba(#b31a22, 0.1);
+  border-left: 5px solid #b31a22;
+}

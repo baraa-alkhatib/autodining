@@ -10,41 +10,49 @@ export class HeaderComponent {
    * Emits a side navbar toggle event
    * @memberof HeaderComponent
    */
-  @Output() public sidenavToggle = new EventEmitter();
+  @Output() public toggleSidenav: EventEmitter<any>;
 
   /**
-   * Emits a login popup window open event
+   * Emits a login dialog open event
    * @memberof HeaderComponent
    */
-  @Output() public loginPopupOpen = new EventEmitter();
+  @Output() public openLoginDialog: EventEmitter<any>;
 
   /**
    * Emits a filter bottom sheet toggle event
    * @memberof HeaderComponent
    */
-  @Output() public filterBottomSheeToggle = new EventEmitter();
+  @Output() public toggleFilterBottomSheet: EventEmitter<any>;
+
+  constructor() {
+    this.toggleSidenav = new EventEmitter();
+
+    this.openLoginDialog = new EventEmitter();
+
+    this.toggleFilterBottomSheet = new EventEmitter();
+  }
 
   /**
-   * Toggles side navbar menu
+   * Emits a value to toggles side navbar menu
    * @memberof HeaderComponent
    */
   public onToggleSidenav = (): void => {
-    this.sidenavToggle.emit();
+    this.toggleSidenav.emit();
   };
 
   /**
-   * Opens login popup window
+   * Emits a value to open login popup window
    * @memberof HeaderComponent
    */
-  public onOpenLoginPopup = (): void => {
-    this.loginPopupOpen.emit();
+  public onOpenLoginDialog = (): void => {
+    this.openLoginDialog.emit();
   };
 
   /**
-   * Toggles filter bottom sheet
+   * Emits a value to toggles filter bottom sheet
    * @memberof HeaderComponent
    */
   public onToggleFilter = (): void => {
-    this.filterBottomSheeToggle.emit();
+    this.toggleFilterBottomSheet.emit();
   };
 }
