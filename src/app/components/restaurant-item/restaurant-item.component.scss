@@ -70,19 +70,19 @@
 }
 
 /**
- * Restaurant is open
- */
-
-.is-open {
-  color: green;
-}
-
-/**
  * Restaurant is closed
  */
 
 .is-closed {
-  color: red;
+  color: red !important;
+}
+
+/**
+ * Restaurant is open
+ */
+
+.is-open {
+  color: green !important;
 }
 
 /**
