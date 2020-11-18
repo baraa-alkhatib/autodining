@@ -1,0 +1,11 @@
+<div class="restaurants-sort"></div>
+<div class="restaurants-count"></div>
+<div class="restaurants-list">
+  <mat-list>
+    <app-restaurant-item
+      *ngFor="let restaurant of restaurants"
+      [restaurant]="restaurant"
+      [showOptions]="true"
+    ></app-restaurant-item>
+  </mat-list>
+</div>

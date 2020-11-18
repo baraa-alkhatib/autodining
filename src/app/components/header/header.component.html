@@ -14,7 +14,7 @@
     <!-- Site Logo -->
     <div class="logo" fxHide.xs>
       <!-- Go to main page when logo is clicked -->
-      <a routerLink="/home">AutoDining</a>
+      <a routerLink="/home" class="logo__link">AutoDining</a>
     </div>
   </div>
 
@@ -26,23 +26,22 @@
   <!-- Flex box 3 (hide in small screens) -->
   <div fxFlex fxLayout fxLayoutAlign="end">
     <!-- Devide this section of the navbar into 2 based on screen size-->
-    <div fxHide.xs>
-      <!-- Initiate a list of items aligned horizontely on this section of the navbar -->
-      <ul fxLayout fxLayoutGap="15px">
-        <!-- If user is not logged in show -->
-        <li *ngIf="true">
-          <button mat-flat-button (click)="onOpenLoginPopup()">
-            <mat-icon>login</mat-icon> Login
-          </button>
-        </li>
-      </ul>
-    </div>
 
-    <div fxHide.gt-xs>
+    <!-- Filter -->
+    <div fxHide.gt-sm class="filter">
       <!-- Toggle the filter bottom sheet button show/hide -->
       <button mat-button (click)="onToggleFilter()" class="mat-accent">
         <mat-icon>tune</mat-icon>
         Filter
+      </button>
+    </div>
+
+    <!-- Login -->
+    <div fxHide.xs>
+      <!-- open the login dialog button -->
+      <button mat-flat-button (click)="onOpenLoginDialog()">
+        <mat-icon>login</mat-icon>
+        Login
       </button>
     </div>
   </div>

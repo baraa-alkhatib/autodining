@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoginWindowComponent } from './login-window.component';
+import { RestaurantItemComponent } from './restaurant-item.component';
 
-describe('LoginWindowComponent', () => {
-  let component: LoginWindowComponent;
-  let fixture: ComponentFixture<LoginWindowComponent>;
+describe('RestaurantItemComponent', () => {
+  let component: RestaurantItemComponent;
+  let fixture: ComponentFixture<RestaurantItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoginWindowComponent],
+      declarations: [RestaurantItemComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoginWindowComponent);
+    fixture = TestBed.createComponent(RestaurantItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

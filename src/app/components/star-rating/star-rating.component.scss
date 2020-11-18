@@ -1,0 +1,16 @@
+/**
+ * Give each star element a good style
+ */
+.star {
+  height: 20px;
+  line-height: 20px;
+  width: 25px;
+}
+
+/**
+ * Turn the cursor to auto to remove the pointer from the star button wrapper
+ * if the stars are meant for presentation only
+ */
+.present-only {
+  cursor: auto;
+}

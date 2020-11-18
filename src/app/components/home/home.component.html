@@ -1,5 +1,35 @@
-<section fxLayout="column" fxFlexAlign="stretch">
-  <div fxFlexAlign="center">
-    <p>Welcome to AutoDining</p>
-  </div>
+<!-- Nav section for big screen sizes -->
+<nav fxHide.lt-md class="nav-menu">
+  <!-- Title for navigation section -->
+  <h2 class="nav-menu__title mat-title">Go to</h2>
+
+  <!-- Add a navigation menu -->
+  <app-navigation-menu></app-navigation-menu>
+
+  <!-- Title for filter section  -->
+  <h2 class="nav-menu__title mat-title" fxLayoutAlign="space-between start">
+    Filter
+    <!-- Add a clear filter button  -->
+    <button
+      mat-button
+      mat-flat-button-basic
+      [matTooltip]="'Clear filter'"
+      matTooltipPosition="below"
+      color="primary"
+    >
+      <!-- Add clear settings icon to the button -->
+      <mat-icon>block_flipped</mat-icon>
+    </button>
+  </h2>
+
+  <!-- Add filter component -->
+  <app-filter></app-filter>
+</nav>
+
+<!-- The main section of the page -->
+<section class="main">
+  <p>Welcome to AutoDining</p>
+
+  <!-- Add restaurants list component -->
+  <app-restaurants-list></app-restaurants-list>
 </section>

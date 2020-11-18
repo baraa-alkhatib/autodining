@@ -1,0 +1,98 @@
+/**
+ * [1] set up the default font color in the item
+ * [2] fix line height to 1.2rem for better appearance and spacing between vertical aligned texts
+ * [3] add a small margin on top to separate items in a list
+ * [4] make the item fillup the width of its container
+ */
+
+.item {
+  color: rgba(0, 0, 0, 0.54); // [1]
+  line-height: 1.2rem; // [2]
+  margin-top: 10px; // [3]
+  width: 100%; // [4]
+}
+
+/**
+ * [1-1] [1-2] [1-3] [1-4] add a border around the image logo container
+ * [2-1] [2-2] fix the height and width of the container
+ * [3] add a small padding to the container
+ */
+
+.item__logo {
+  border-color: #c5c5c5; // [1-1]
+  border-radius: 5px; // [1-2]
+  border-style: solid; // [1-3]
+  border-width: 1px; // [1-4]
+  height: 90px; // [2-1]
+  padding: 3px; // [3]
+  width: 90px; // [2-2]
+}
+
+/**
+ * Make the image fill the available space
+ */
+
+.item__logo__img {
+  height: 100%;
+  width: 100%;
+}
+
+/**
+ * Add a small margin to the left of item content to separate it from the logo
+ */
+
+.item-content {
+  margin-left: 10px;
+}
+
+/**
+ * Give each item container a small margin on top to make a space in between
+ */
+
+.item__name-container,
+.item__rating-container,
+.item__address-container,
+.item__status-container {
+  margin-top: 3px;
+}
+
+/**
+ * - Give the name of the restaurant nice styling
+ * - Remove the anchor default style
+ */
+
+.item__name-container__name {
+  color: #939393;
+  font-size: 1.2rem;
+  outline: none;
+  text-align: left;
+  text-decoration: none;
+}
+
+/**
+ * Restaurant is open
+ */
+
+.is-open {
+  color: green;
+}
+
+/**
+ * Restaurant is closed
+ */
+
+.is-closed {
+  color: red;
+}
+
+/**
+ * The name of the restaurant shold have an underlining border When hovering anywhere over the container
+ */
+
+.item:hover {
+  .item__name-container__name {
+    border-bottom-color: #000;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+  }
+}

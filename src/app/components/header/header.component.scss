@@ -1,3 +1,22 @@
-.logo {
+/**
+ * Reset the style of logo's anchor element
+ */
+
+.logo,
+.logo__link {
+  border: none;
+  color: #fafafa;
   cursor: pointer;
+  text-decoration: none;
+  outline: none;
+}
+
+/**
+ * Add margin to filter button in order to separate it from login button in small screens
+ */
+
+@media (max-width: 960px) and (min-width: 600px) {
+  .filter {
+    margin-right: 10px;
+  }
 }
