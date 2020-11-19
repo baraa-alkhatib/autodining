@@ -7,6 +7,22 @@ export const environment = {
 };
 
 /*
+ * API end points
+ */
+export const API = {
+  signup: '/auth/signup',
+  login: '/auth/login',
+};
+
+/**
+ * Storage Tokens
+ */
+
+export const ACCESS_TOKEN_KEY = 'access_token';
+
+export const USER_INFO_KEY = 'user_info';
+
+/*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
  *

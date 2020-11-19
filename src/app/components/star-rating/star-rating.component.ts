@@ -65,8 +65,10 @@ export class StarRatingComponent implements OnInit {
     // set snackbar duration to 1500 milliseconds
     this._snackBarDuration = 1500;
 
+    // Initialize ratingUpdated
     this.ratingUpdated = new EventEmitter();
 
+    // Initialize starsArr
     this.starsArr = [];
   }
 

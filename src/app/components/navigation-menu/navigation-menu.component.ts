@@ -15,6 +15,7 @@ export class NavigationMenuComponent {
   @Output() public sidenavClose: EventEmitter<any>;
 
   constructor() {
+    // Initialize sidenavClose
     this.sidenavClose = new EventEmitter();
   }
 

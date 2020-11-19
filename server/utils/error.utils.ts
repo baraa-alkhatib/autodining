@@ -1,4 +1,4 @@
-import ICustomError from '../models/custom-error';
+import ICustomError from '../models/custom-error.model';
 
 /**
  * - Creates an error of @type {ICustomError}

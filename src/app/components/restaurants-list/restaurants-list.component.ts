@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import IRestaurantItem from '../../models/restaurant-item';
+import IRestaurantItem from '../../models/restaurant-item.model';
 
 @Component({
   selector: 'app-restaurants-list',
