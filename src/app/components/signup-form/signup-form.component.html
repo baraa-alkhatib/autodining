@@ -1,0 +1,122 @@
+<mat-card class="signup-card">
+  <mat-card-header flxLayout="row" fxLayoutAlign="center">
+    <mat-card-title class="signup-card__title"> Signup </mat-card-title>
+    <mat-card-subtitle class="signup-card__subtitle signup-card__subtitle--margin-top"
+      >As</mat-card-subtitle
+    >
+    <mat-card-subtitle
+      class="signup-card__subtitle signup-card__subtitle--text-bg signup-card__subtitle--text-primary"
+    >
+      ({{ userType === 'regular' ? 'Regular User' : 'Business Owner' }})
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form fxLayout="column" [formGroup]="form" (ngSubmit)="onSignup()" class="signup-card__form">
+      <input type="hidden" name="type" [(ngModel)]="userType" formControlName="type" required />
+      <mat-form-field class="signup-card__email">
+        <input matInput type="text" placeholder="Name" formControlName="name" required />
+        <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+          <div *ngIf="name?.errors?.required">
+            <span class="text-danger">*</span> Name is required
+          </div>
+          <div
+            *ngIf="name?.errors?.minlength || (name?.errors?.maxlength && name?.value?.length > 0)"
+          >
+            <span class="text-danger">*</span> Please provide a valid name
+          </div>
+          <div *ngIf="name?.errors?.pattern && name?.value?.length > 3">
+            <span class="text-danger">*</span> Only alphabetical characters are allowed
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="signup-card__email">
+        <input matInput type="email" placeholder="Email" formControlName="email" required />
+        <mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+          <div *ngIf="email?.errors?.required">
+            <span class="text-danger">*</span> email address is required
+          </div>
+          <div *ngIf="email?.errors?.email || email?.errors?.maxlength">
+            <span class="text-danger">*</span> Please provide a valid email address
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <div fxLayout="column" formGroupName="password">
+        <mat-form-field class="signup-card__password">
+          <input
+            matInput
+            type="password"
+            placeholder="Password"
+            formControlName="newPassword"
+            autocomplete
+            required
+          />
+          <mat-error *ngIf="newPassword?.invalid && (newPassword?.dirty || newPassword?.touched)">
+            <div *ngIf="newPassword?.errors?.minlength || newPassword?.errors?.maxlength">
+              <span class="text-danger">*</span> Password should be between 6 and 20 characters
+            </div>
+
+            <div
+              *ngIf="
+                !newPassword?.errors?.minlength &&
+                !newPassword?.errors?.maxlength &&
+                newPassword?.errors?.pattern
+              "
+            >
+              <span class="text-danger">*</span> Weak Password! Strong passwords contain letters and
+              numbers
+            </div>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="signup-card__password">
+          <input
+            matInput
+            type="password"
+            placeholder="Confirm password"
+            formControlName="confirmPassword"
+            autocomplete
+            required
+          />
+          <mat-error
+            *ngIf="(confirmPassword?.invalid && confirmPassword?.dirty) || confirmPassword?.touched"
+          >
+            <div *ngIf="confirmPassword?.errors?.noMatch && newPassword?.valid">
+              <span class="text-danger">*</span> The two passwords did not match
+            </div>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="signup-card__extra">
+        <div fxLayout="row" fxLayoutAlign="center">
+          <mat-error *ngIf="errorMessage">
+            {{ errorMessage }}
+          </mat-error>
+          <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+        </div>
+        <div>
+          <button
+            mat-button
+            type="button"
+            (click)="userType = 'owner'"
+            *ngIf="userType === 'regular'"
+            color="primary"
+          >
+            Register as a business owner
+          </button>
+          <button
+            mat-button
+            type="button"
+            (click)="userType = 'regular'"
+            *ngIf="userType === 'owner'"
+            color="primary"
+          >
+            Register as a regular user
+          </button>
+        </div>
+      </div>
+      <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid">
+        Signup
+      </button>
+    </form>
+    <br />
+  </mat-card-content>
+</mat-card>

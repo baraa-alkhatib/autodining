@@ -1,0 +1,8 @@
+/*
+ * Removes padding from mat-dialog
+ * refer to https://stackoverflow.com/questions/45928423/get-rid-of-white-space-around-angular-material-modal-dialog
+ */
+
+.dialog-no-padding .mat-dialog-container {
+  padding: 0 !important;
+}

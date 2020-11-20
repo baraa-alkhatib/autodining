@@ -5,10 +5,10 @@
  */
 export default interface IRestaurantItem {
   _id: string;
-  imageUrl: string;
   name: string;
+  imageUrl: string;
   rating: number;
-  reviewsNumber: number;
+  reviewsCount: number;
   address: string;
   status: 'open' | 'closed';
 }

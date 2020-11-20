@@ -37,12 +37,42 @@
     </div>
 
     <!-- Login -->
-    <div fxHide.xs>
+    <div fxHide.xs *ngIf="url !== '/auth/login' && !isLoggedIn">
       <!-- open the login dialog button -->
       <button mat-flat-button (click)="onOpenLoginDialog()">
         <mat-icon>login</mat-icon>
         Login
       </button>
+    </div>
+
+    <!-- User Menu -->
+    <div fxHide.xs *ngIf="isLoggedIn">
+      <div [matMenuTriggerFor]="menu" fxLayout="row" fxLayoutAlign="start center">
+        <div
+          mat-card-avatar
+          [style.backgroundImage]="
+            'url(' + (user.imageUrl || '/assets/images/placeholders/avatar-s-19.png') + ')'
+          "
+          class="user-card__avatar"
+        ></div>
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="-10px">
+          <div class="user-card__name">{{ user?.name }}</div>
+          <div class="user-card__type" *ngIf="user?.type !== 'regular'">{{ user?.type }}</div>
+        </div>
+        <mat-menu #menu="matMenu">
+          <!-- Account Settings -->
+          <button mat-menu-item>
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+
+          <!-- Logout Button -->
+          <button mat-menu-item (click)="onOpenLogoutDialog()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
   </div>
 </mat-toolbar>

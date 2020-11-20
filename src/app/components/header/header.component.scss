@@ -11,6 +11,29 @@
   outline: none;
 }
 
+.user-card__avatar {
+  background-color: rgba(0, 0, 0, 0.1);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
+  height: 52px;
+  margin-right: 10px;
+  width: 52px;
+}
+
+.user-card__name {
+font-size: 1.1rem;
+}
+
+.user-card__type {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
+}
+
 /**
  * Add margin to filter button in order to separate it from login button in small screens
  */
