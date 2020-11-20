@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../../services/auth.service';
-import { CustomValidators } from '../../utils/custom-validators';
+import { CustomValidators } from '../../utils/custom-validators.utils';
 
 @Component({
   selector: 'app-signup-form',

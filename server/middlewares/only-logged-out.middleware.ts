@@ -4,7 +4,7 @@ import createError from '../utils/error.utils';
 
 /**
  * Permits only logged out users to carry on to the next middleware
- * If the user is logged in, it redirects the user to the main page
+ * If the user is logged in, it throws error 403 (forbidden)
  * @param {*} req
  * @param {*} res
  * @param {*} next
@@ -22,7 +22,7 @@ const onlyLoggedOut: Handler = (req, res, next) => {
         return next();
       }
 
-      // if they are send throw error 403 (forbidden)
+      // if they are logged in throw error 403 (forbidden)
       throw createError(err, { client: 'you are already logged in!', statusCode: 403 });
     } catch (error) {
       return next(error);

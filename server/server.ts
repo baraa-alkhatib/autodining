@@ -13,10 +13,11 @@ import { User } from './db/models';
  */
 import configMongoDB from './db/mongodb.config';
 import login from './middlewares/login.middleware';
-/** Express Routes * */
-// TODO: import apiRoutes from './routes/apis';
+import onlyLoggedIn from './middlewares/only-logged-in.middleware';
 import onlyLoggedOut from './middlewares/only-logged-out.middleware';
 import signup from './middlewares/signup.middleware';
+/** Express Routes * */
+import apiRoutes from './routes/apis';
 
 export default class ServerApp {
   // BROWSER FOLDER
@@ -160,7 +161,7 @@ export default class ServerApp {
     this._app.post('/auth/login', onlyLoggedOut, login);
 
     // serve API
-    // TODO: this._app.use('/api', apiRoutes);
+    this._app.use('/api', onlyLoggedIn, apiRoutes);
 
     // serve static files
     this._app.get('*.*', express.static(this._WWW_FOLDER));

@@ -115,6 +115,11 @@ export class LoginFormComponent implements OnInit, OnDestroy {
                 break;
               }
 
+              case 404: {
+                this.errorMessage = 'There is no account registered with this email.';
+                break;
+              }
+
               case 401: {
                 this.errorMessage = 'You do not have the necessary permissions!';
                 break;

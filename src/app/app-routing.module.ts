@@ -15,6 +15,19 @@ const routes: Routes = [
   { path: 'signup', redirectTo: '/auth/signup', pathMatch: 'full' },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
+    path: 'users',
+    loadChildren: () => import('./modules/users/users.module').then((m) => m.UsersModule),
+  },
+  {
+    path: 'restaurants',
+    loadChildren: () =>
+      import('./modules/restaurants/restaurants.module').then((m) => m.RestaurantsModule),
+  },
+  {
+    path: 'reviews',
+    loadChildren: () => import('./modules/reviews/reviews.module').then((m) => m.ReviewsModule),
+  },
+  {
     path: '**',
     redirectTo: '/home',
   },

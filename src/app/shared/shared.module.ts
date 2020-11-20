@@ -27,6 +27,7 @@ import { SignupFormComponent } from '../components/signup-form/signup-form.compo
 import { StarRatingComponent } from '../components/star-rating/star-rating.component';
 import { AngularFlexLayoutModule } from './angular-flex-layout/angular-flex-layout.module';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { FileUploadComponent } from '../components/file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
     EditRestaurantFormComponent,
     DeleteFormComponent,
     LogoutFormComponent,
+    FileUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -94,6 +96,7 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
     SignupFormComponent,
     DeleteFormComponent,
     LogoutFormComponent,
+    FileUploadComponent,
   ],
 })
 export class SharedModule {}

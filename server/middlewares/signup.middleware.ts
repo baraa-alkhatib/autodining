@@ -7,7 +7,7 @@ import { Validator } from '../utils/validator.utils';
 const signup: RequestHandler = async (req, res, next) => {
   try {
     // extract necessary fields
-    const { email, type, name, password } = req.body;
+    const { email, type, name, password, ADMIN_CREATE_ACCESS_TOKEN } = req.body;
 
     const { newPassword } = password;
     // validate inputs
@@ -15,12 +15,22 @@ const signup: RequestHandler = async (req, res, next) => {
       !Validator.isValidUserName(name) ||
       !Validator.isEmail(email) ||
       !Validator.isStrongPassword(newPassword) ||
-      (type !== 'owner' && type !== 'regular')
+      (type !== 'owner' && type !== 'regular' && type !== 'admin')
     ) {
       throw createError(new Error('Invalid request body'), {
         client: 'Invalid request body',
         statusCode: 404,
       });
+    }
+
+    if (type === 'admin') {
+      // check for access token
+      if (ADMIN_CREATE_ACCESS_TOKEN !== process.env.ADMIN_CREATE_ACCESS_TOKEN) {
+        throw createError(new Error('Invalid request body'), {
+          client: 'Invalid request body',
+          statusCode: 404,
+        });
+      }
     }
 
     const user = await User.findOne({ email: email.trim() });
@@ -48,7 +58,6 @@ const signup: RequestHandler = async (req, res, next) => {
 
     // TODO: send email verification message
 
-    // redirect to login page
     return res.status(200).end();
   } catch (error) {
     return next(error);

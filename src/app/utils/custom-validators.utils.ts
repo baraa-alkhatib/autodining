@@ -1,4 +1,4 @@
-import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormControl, ValidatorFn } from '@angular/forms';
 
 export class CustomValidators {
   public static readonly USER_REAL_NAME_PATTERN = /^[a-zA-Z ]+$/;
@@ -15,6 +15,27 @@ export class CustomValidators {
       return control.parent.get(fieldSelector)?.value === control.value
         ? null
         : { noMatch: { value: 'no match' } };
+    };
+  }
+
+  /** validate custom file-upload input */
+  public requiredFileType(type: string) {
+    return (control: FormControl) => {
+      const file = control.value;
+
+      if (file) {
+        const extension = file.name.split('.')[1].toLowerCase();
+
+        if (type.toLowerCase() !== extension.toLowerCase()) {
+          return {
+            requiredFileType: true,
+          };
+        }
+
+        return null;
+      }
+
+      return null;
     };
   }
 }

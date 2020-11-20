@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ['owner', 'regular'],
+      enum: ['admin', 'owner', 'regular'],
       required: true,
     },
   },
@@ -33,9 +33,9 @@ export interface UserModel extends mongoose.Document {
   email: string;
   password: string;
   imageUrl: string;
-  type: 'owner' | 'regular';
-  createdAt?: any;
-  updatedAt?: any;
+  type: 'admin' | 'owner' | 'regular';
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 // plugin local-mongoose, use email instead of username
