@@ -33,12 +33,12 @@ export class OnlyLoggedOutGuard implements CanActivate, CanLoad {
    */
   private allowOnlyLoggedOut(): Observable<boolean> {
     // if logged in redirect to main page
-    return this._authServ.isLoggedIn().pipe(
+    return this._authServ.isLoggedIn$.pipe(
       take(1),
       map((isLoggedIn) => {
         if (isLoggedIn) {
           // redirect to main page
-          this._router.navigateByUrl('/home', { replaceUrl: true });
+          this._router.navigateByUrl('/', { replaceUrl: true });
           return false;
         }
         return true;

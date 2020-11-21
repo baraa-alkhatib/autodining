@@ -6,7 +6,7 @@ import createError from '../../utils/error.utils';
 const createReview: Handler = async (req, res, next) => {
   try {
     // extract necessary fields
-    const reqUserId = (<UserModel>req.user)._id;
+    const reqUserId = (<UserModel>req.user).id;
 
     const { restaurantId } = req.query;
 

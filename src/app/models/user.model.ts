@@ -8,5 +8,5 @@ export interface IUser {
   name: string;
   email: string;
   type: 'admin' | 'owner' | 'regular';
-  imageUrl?: string;
+  imageUrl: string;
 }

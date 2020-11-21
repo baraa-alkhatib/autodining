@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -16,6 +24,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class FileUploadComponent implements ControlValueAccessor {
+  @Input() acceptedFileTypes!: string;
+
+  /**
+   * Emits the file that was selected
+   * @type {EventEmitter<File | null>}
+   * @memberof FileUploadComponent
+   */
+  @Output() public fileSelected!: EventEmitter<File | null>;
+
   public onChange!: Function;
 
   public file!: File | null;
@@ -26,10 +43,16 @@ export class FileUploadComponent implements ControlValueAccessor {
     this.onChange(file);
 
     this.file = file;
+
+    // emit the file
+    this.fileSelected.emit(file);
   }
 
   constructor(private host: ElementRef<HTMLInputElement>) {
     this.file = null;
+
+    // initialize event emitters
+    this.fileSelected = new EventEmitter();
   }
 
   public writeValue() {

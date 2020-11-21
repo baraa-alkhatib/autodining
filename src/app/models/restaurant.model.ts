@@ -1,4 +1,4 @@
-import { IUser } from '../../../server/models/user.model';
+import { IUser } from './user.model';
 
 /**
  * Detailed restaurant data model

@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { DeleteFormComponent } from '../components/delete-form/delete-form.component';
 import { EditRestaurantFormComponent } from '../components/edit-restaurant-form/edit-restaurant-form.component';
+import { FileUploadComponent } from '../components/file-upload/file-upload.component';
 import { FilterBottomSheetComponent } from '../components/filter-bottom-sheet/filter-bottom-sheet.component';
 import { FilterComponent } from '../components/filter/filter.component';
 import { LoginFormComponent } from '../components/login-form/login-form.component';
@@ -25,12 +26,13 @@ import { RestaurantItemComponent } from '../components/restaurant-item/restauran
 import { RestaurantsListComponent } from '../components/restaurants-list/restaurants-list.component';
 import { SignupFormComponent } from '../components/signup-form/signup-form.component';
 import { StarRatingComponent } from '../components/star-rating/star-rating.component';
+import { AssetPathResolvePipe } from '../pipes/asset-path-resolve.pipe';
 import { AngularFlexLayoutModule } from './angular-flex-layout/angular-flex-layout.module';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
-import { FileUploadComponent } from '../components/file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
+    // components
     LoginFormComponent,
     SignupFormComponent,
     FilterComponent,
@@ -43,6 +45,8 @@ import { FileUploadComponent } from '../components/file-upload/file-upload.compo
     DeleteFormComponent,
     LogoutFormComponent,
     FileUploadComponent,
+    // pipes
+    AssetPathResolvePipe,
   ],
   imports: [
     CommonModule,
@@ -97,6 +101,8 @@ import { FileUploadComponent } from '../components/file-upload/file-upload.compo
     DeleteFormComponent,
     LogoutFormComponent,
     FileUploadComponent,
+    // expotr pipes
+    AssetPathResolvePipe,
   ],
 })
 export class SharedModule {}

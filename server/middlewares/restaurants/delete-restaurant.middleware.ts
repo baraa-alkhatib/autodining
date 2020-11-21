@@ -7,7 +7,7 @@ const deleteRestaurant: Handler = async (req, res, next) => {
     // extract necessary fields
     const userType = (<UserModel>req.user).type;
 
-    const reqUserId = (<UserModel>req.user)._id;
+    const reqUserId = (<UserModel>req.user).id;
 
     const restaurantId = req.params.id;
 

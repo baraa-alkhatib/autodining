@@ -20,7 +20,7 @@ router.get('/:id', getUser, (req, res) => {
 });
 
 // update user
-router.put('/:id', updateUser, upload, (req, res) => {
+router.put('/:id', upload('image'), updateUser, (req, res) => {
   res.status(200).json({ user: res.locals.user });
 });
 

@@ -1,0 +1,86 @@
+<mat-card class="user-card">
+  <mat-card-header flxLayout="row" fxLayoutAlign="center">
+    <mat-card-title class="user-card__title"> Profile Settings </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form fxLayout="column" [formGroup]="form" (ngSubmit)="onUpdate()" class="user-card__form">
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+          <img
+            [src]="image.fileName | assetPathResolve: image.fileType:'user'"
+            class="user-card__photo"
+          />
+          <app-file-upload
+            formControlName="image"
+            acceptedFileTypes=".png, .jpg, .jpeg"
+            (fileSelected)="onPreviewImage($event)"
+          ></app-file-upload>
+        </div>
+      </div>
+
+      <mat-form-field class="user-card__email">
+        <input matInput type="text" placeholder="Name" formControlName="name" />
+        <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+          <div
+            *ngIf="name?.errors?.minlength || (name?.errors?.maxlength && name?.value?.length > 0)"
+          >
+            <span class="text-danger">*</span> Please provide a valid name
+          </div>
+
+          <div *ngIf="name?.errors?.pattern && name?.value?.length > 3">
+            <span class="text-danger">*</span> Only alphabetical characters are allowed
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="user-card__email">
+        <input matInput type="email" placeholder="Email" formControlName="email" />
+
+        <mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+          <div *ngIf="email?.errors?.email || email?.errors?.maxlength">
+            <span class="text-danger">*</span> Please provide a valid email address
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="user-card__password">
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          autocomplete
+        />
+
+        <mat-error *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+          <div *ngIf="password?.errors?.minlength || password?.errors?.maxlength">
+            <span class="text-danger">*</span> Password should be between 6 and 20 characters
+          </div>
+
+          <div
+            *ngIf="
+              !password?.errors?.minlength &&
+              !password?.errors?.maxlength &&
+              password?.errors?.pattern
+            "
+          >
+            <span class="text-danger">*</span> Weak Password! Strong passwords contain letters and
+            numbers
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <div class="user-card__extra">
+        <div fxLayout="row" fxLayoutAlign="center">
+          <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+        </div>
+      </div>
+
+      <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid">
+        Update
+      </button>
+    </form>
+    <br />
+  </mat-card-content>
+</mat-card>

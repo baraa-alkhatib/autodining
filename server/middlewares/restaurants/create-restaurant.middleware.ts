@@ -6,7 +6,7 @@ import createError from '../../utils/error.utils';
 const createRestaurant: Handler = async (req, res, next) => {
   try {
     // extract necessary fields
-    const reqUserId = (<UserModel>req.user)._id;
+    const reqUserId = (<UserModel>req.user).id;
 
     const { name, description, address, imageUrl, status } = req.body;
 

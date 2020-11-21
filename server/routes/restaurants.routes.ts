@@ -21,12 +21,19 @@ router.get('/:id', getRestaurant, (req, res) => {
 });
 
 // create restaurant
-router.post('', disallowUserAdmin, disallowUserRegular, upload, createRestaurant, (req, res) => {
-  res.status(200).json({ newImageUrl: res.locals.imageUrl });
-});
+router.post(
+  '',
+  disallowUserAdmin,
+  disallowUserRegular,
+  upload('image'),
+  createRestaurant,
+  (req, res) => {
+    res.status(200).json({ newImageUrl: res.locals.imageUrl });
+  }
+);
 
 // update restaurant
-router.put('/:id', disallowUserRegular, upload, updateRestaurant, (req, res) => {
+router.put('/:id', disallowUserRegular, upload('image'), updateRestaurant, (req, res) => {
   res.status(200).json({ restaurant: res.locals.restaurant });
 });
 

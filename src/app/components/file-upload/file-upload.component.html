@@ -1,5 +1,15 @@
 <div>
-  <span>Choose image</span>
-  <span>{{ file ? file.name : 'or drag and drop file here' }}</span>
-  <input class="file-input" type="file" name="image" accept=".png, .jpg, .jpeg, .gif" />
+  <!-- <span> TODO: {{ file ? file!.name : ' or drag and drop file here' }}</span> -->
+
+  <label for="file-upload" class="file-upload__label">
+    <i class="fa fa-cloud-upload"></i> Upload {{ file ? file!.name : 'image' }}
+  </label>
+
+  <input
+    id="file-upload"
+    class="file-upload__input"
+    type="file"
+    name="image"
+    [accept]="acceptedFileTypes"
+  />
 </div>

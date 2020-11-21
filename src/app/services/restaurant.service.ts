@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { API } from '../../environments/environment';
 import IRestaurantItem from '../models/restaurant-item.model';
 import IRestaurant from '../models/restaurant.model';
@@ -42,25 +43,34 @@ export class RestaurantService {
     return this._http.get<{ restaurants: IRestaurantItem[] }>(url, { params: queryParams });
   }
 
-  public getRestaurant(restaurantId: string): Observable<{ restaurant: IRestaurant }> {
+  public getRestaurant(restaurantId: string): Observable<IRestaurant> {
     const url = API.getRestaurant.replace(':restaurantId', restaurantId);
 
-    return this._http.get<{ restaurant: IRestaurant }>(url);
+    return this._http.get<{ restaurant: IRestaurant }>(url).pipe(
+      map((data) => {
+        return data.restaurant;
+      })
+    );
   }
 
-  public createRestaurant(restaurantForm: NgForm): Observable<{ restaurant: IRestaurant }> {
+  public createRestaurant(restaurantForm: NgForm): Observable<IRestaurant> {
     const url = API.createRestaurant;
 
-    return this._http.post<{ restaurant: IRestaurant }>(url, restaurantForm);
+    return this._http.post<{ restaurant: IRestaurant }>(url, restaurantForm).pipe(
+      map((data) => {
+        return data.restaurant;
+      })
+    );
   }
 
-  public updateRestaurant(
-    restaurantForm: NgForm,
-    restaurantId: string
-  ): Observable<{ restaurant: IRestaurant }> {
+  public updateRestaurant(restaurantForm: NgForm, restaurantId: string): Observable<IRestaurant> {
     const url = API.updateRestaurant.replace(':restaurantId', restaurantId);
 
-    return this._http.put<{ restaurant: IRestaurant }>(url, restaurantForm);
+    return this._http.put<{ restaurant: IRestaurant }>(url, restaurantForm).pipe(
+      map((data) => {
+        return data.restaurant;
+      })
+    );
   }
 
   public deleteRestaurant(restaurantId: string): Observable<void> {
