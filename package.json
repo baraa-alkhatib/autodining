@@ -8,7 +8,7 @@
     "serve:angular": "ng serve",
     "build:angular-watch": "ng build --watch",
     "build:server-watch": "webpack --mode development --config webpack.server.config.js --watch --progress --color",
-    "start:server-watch": "nodemon dist/server.js",
+    "start:server-watch": "nodemon dist/server.js --watch dist/server.js",
     "build:angular": "ng build",
     "build:angular-prod": "ng build --prod",
     "build:server-prod": "webpack --mode production --config webpack.server.config.js --progress --color",
