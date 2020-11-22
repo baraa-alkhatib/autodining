@@ -94,27 +94,8 @@ const getRestaurant: Handler = async (req, res, next) => {
     // retrieve the first and only restaurant in the resulting array
     const [restaurant] = [...restaurants];
 
-    // get newest max and min reviews
-
-    const maxReview = await Review.findOne({
-      restaurant: restaurant._id,
-    }).sort({ rating: -1, createdAt: -1 });
-
-    const minReview = await Review.findOne({
-      restaurant: restaurant._id,
-
-      // make sure min is not equal to max
-      _id: { $ne: maxReview?._id },
-    }).sort({ rating: 1, createdAt: -1 });
-
     // extract restaurant's owner info
     const owner = await User.findById(restaurant.user);
-
-    // atach values to the resulting object
-
-    restaurant.maxReview = maxReview;
-
-    restaurant.minReview = minReview;
 
     restaurant.user = {
       _id: owner?.id,

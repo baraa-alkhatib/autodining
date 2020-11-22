@@ -5,7 +5,7 @@
         mat-card-avatar
         class="header-image"
         [style.backgroundImage]="
-          'url(' + (restaurant.user!.imageUrl | assetPathResolve: 'image':'user') + ')'
+          'url(' + (restaurant!.user!.imageUrl | assetPathResolve: 'image':'user') + ')'
         "
       ></div>
       <mat-card-title>{{ restaurant.name }}</mat-card-title>
@@ -49,40 +49,69 @@
 
       <mat-divider></mat-divider>
       <div class="card__comments-headline mat-headline">Reviews</div>
-      <div class="card__comments-container" *ngIf="restaurant.maxReview && restaurant.minReview">
-        <app-review-item
-          [review]="restaurant.maxReview"
-          [owner]="restaurant.user"
-          (reviewChanged)="onReviewChanged()"
-        ></app-review-item>
-      </div>
-      <div class="card__comments-container" *ngIf="restaurant.maxReview && restaurant.minReview">
-        <app-review-item
-          [review]="restaurant.minReview"
-          [owner]="restaurant.user"
-          (reviewChanged)="onReviewChanged()"
-        ></app-review-item>
-      </div>
-      <div class="card__comments-container" *ngFor="let review of reviews">
-        <ng-container
-          *ngIf="
-            review._id !== restaurant.maxReview!._id && review._id !== restaurant.minReview!._id
-          "
-        >
+
+      <ng-container *ngIf="!loadingReviews">
+        <div class="card__comments-no-reviews" *ngIf="reviews?.length === 0">No Reviews!</div>
+
+        <div class="card__comments-container" *ngIf="maxReview">
           <app-review-item
-            [review]="review"
+            [review]="maxReview"
             [owner]="restaurant.user"
             (reviewChanged)="onReviewChanged()"
           ></app-review-item>
-          <ng-container *ngIf="review.reply">
+
+          <ng-container *ngIf="maxReview.reply">
             <app-review-item
-              [review]="review"
+              [review]="maxReview"
               [isReply]="true"
               [owner]="restaurant.user"
               (reviewChanged)="onReviewChanged()"
             ></app-review-item>
           </ng-container>
-        </ng-container>
+        </div>
+
+        <div class="card__comments-container" *ngIf="minReview">
+          <app-review-item
+            [review]="minReview"
+            [owner]="restaurant.user"
+            (reviewChanged)="onReviewChanged()"
+          ></app-review-item>
+
+          <ng-container *ngIf="minReview.reply">
+            <app-review-item
+              [review]="minReview"
+              [isReply]="true"
+              [owner]="restaurant.user"
+              (reviewChanged)="onReviewChanged()"
+            ></app-review-item>
+          </ng-container>
+        </div>
+
+        <div class="card__comments-container" *ngFor="let review of reviews">
+          <ng-container *ngIf="review._id !== maxReview!._id && review._id !== minReview!._id">
+            <app-review-item
+              [review]="review"
+              [owner]="restaurant.user"
+              (reviewChanged)="onReviewChanged()"
+            ></app-review-item>
+
+            <ng-container *ngIf="review.reply">
+              <app-review-item
+                [review]="review"
+                [isReply]="true"
+                [owner]="restaurant.user"
+                (reviewChanged)="onReviewChanged()"
+              ></app-review-item>
+            </ng-container>
+          </ng-container>
+        </div>
+
+      </ng-container>
+
+      <div>
+        <div fxLayout="row" fxLayoutAlign="center">
+          <mat-spinner [style.display]="loadingReviews ? 'block' : 'none'"></mat-spinner>
+        </div>
       </div>
     </mat-card-content>
   </ng-container>

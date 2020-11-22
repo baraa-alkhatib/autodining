@@ -10,7 +10,11 @@
     <div>
       <div class="item__logo">
         <img
-          src="{{ review.user.imageUrl | assetPathResolve: 'image':'user' }}"
+          src="{{
+            isReply
+              ? (owner!.imageUrl | assetPathResolve: 'image':'user')
+              : (review.user.imageUrl | assetPathResolve: 'image':'user')
+          }}"
           class="item__logo__img"
         />
       </div>
@@ -22,7 +26,7 @@
       <div class="item__name-container">
         <a class="item__name-container__name">{{ isReply ? owner!.name : review.user.name }}</a>
       </div>
-      <div class="mat-small">{{ review.createdAt | date }}</div>
+      <div class="mat-small" *ngIf="!isReply">{{ review.createdAt | date }}</div>
 
       <!-- Reviewer's Star Rating -->
       <div class="item__rating-container" *ngIf="!isReply">

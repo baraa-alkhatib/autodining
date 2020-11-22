@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs/operators';
-import { IUser } from '../../../../server/models/user.model';
+import { IUser } from '../../models/user.model';
 import IRestaurant from '../../models/restaurant.model';
 import IReview from '../../models/review.model';
 import { ReviewService } from '../../services/review.service';

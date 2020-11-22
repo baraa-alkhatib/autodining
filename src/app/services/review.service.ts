@@ -14,14 +14,27 @@ export class ReviewService {
 
   /**
    * Returns list of reviews
-   * @returns {Observable<IReview[]>}
+   * @param {string} restaurantId
+   * @param {1} [pendingCount]
+   * @param {1} [reviewsList]
+   * @returns {Observable<{
+   *     reviews?: IReview[];
+   *     maxReview?: IReview;
+   *     minReview?: IReview;
+   *     awaitingResponseCount?: number;
+   *   }>}
    * @memberof ReviewService
    */
   public getReviews(
     restaurantId: string,
     pendingCount?: 1,
     reviewsList?: 1
-  ): Observable<IReview[]> {
+  ): Observable<{
+    reviews?: IReview[];
+    maxReview?: IReview;
+    minReview?: IReview;
+    awaitingResponseCount?: number;
+  }> {
     const url = API.getReviews;
 
     const queryParams: { [param: string]: string } = { restaurantId };
@@ -34,13 +47,14 @@ export class ReviewService {
       queryParams.reviewsList = `${reviewsList}`;
     }
 
-    return this._http
-      .get<{ reviews: IReview[] }>(url, { params: queryParams })
-      .pipe(
-        map((data) => {
-          return data.reviews;
-        })
-      );
+    return this._http.get<{
+      reviews: IReview[];
+      maxReview?: IReview;
+      minReview?: IReview;
+      awaitingResponseCount?: number;
+    }>(url, {
+      params: queryParams,
+    });
   }
 
   public getReview(reviewId: string): Observable<IReview> {

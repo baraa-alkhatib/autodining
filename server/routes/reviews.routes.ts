@@ -12,9 +12,12 @@ const router = express.Router({ mergeParams: true });
 
 // get reviews
 router.get('/', getReviews, (req, res) => {
-  res
-    .status(200)
-    .json({ reviews: res.locals.reviews, awaitingResponseCount: res.locals.awaitingResponseCount });
+  res.status(200).json({
+    reviews: res.locals.reviews,
+    maxReview: res.locals.maxReview,
+    minReview: res.locals.minReview,
+    awaitingResponseCount: res.locals.awaitingResponseCount,
+  });
 });
 
 // get review

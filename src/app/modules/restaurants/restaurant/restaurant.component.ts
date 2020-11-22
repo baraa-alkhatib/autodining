@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
+
 import { IUser } from '../../../../../server/models/user.model';
 import { ReviewFormComponent } from '../../../components/review-form/review-form.component';
 import IRestaurant from '../../../models/restaurant.model';
@@ -23,11 +24,17 @@ export class RestaurantComponent implements OnInit, OnDestroy {
    */
   private readonly _subscriptions$: Subscription[];
 
-  public restaurant!: Partial<IRestaurant>;
+  public restaurant!: IRestaurant;
 
   public reviews!: IReview[];
 
+  public maxReview!: IReview;
+
+  public minReview!: IReview;
+
   public user$!: Observable<IUser>;
+
+  public loadingReviews: boolean;
 
   public image!: {
     fileName: string;
@@ -45,6 +52,8 @@ export class RestaurantComponent implements OnInit, OnDestroy {
 
     // initiate
     this.user$ = this._authServ.user$;
+
+    this.loadingReviews = true;
   }
 
   public ngOnInit(): void {
@@ -57,11 +66,7 @@ export class RestaurantComponent implements OnInit, OnDestroy {
         this.image = { fileName: <string>this.restaurant.imageUrl, fileType: 'image' };
 
         // load reviews/replies
-        this._reviewServ
-          .getReviews(<string>this.restaurant._id, undefined, 1)
-          .subscribe((reviews) => {
-            this.reviews = reviews;
-          });
+        this.getReviews();
       })
     );
   }
@@ -93,9 +98,17 @@ export class RestaurantComponent implements OnInit, OnDestroy {
   }
 
   public getReviews(): void {
+    this.loadingReviews = true;
+
     // refresh the list
-    this._reviewServ.getReviews(<string>this.restaurant._id, undefined, 1).subscribe((reviews) => {
-      this.reviews = reviews;
+    this._reviewServ.getReviews(<string>this.restaurant._id, undefined, 1).subscribe((data) => {
+      this.reviews = <IReview[]>data.reviews;
+
+      this.maxReview = <IReview>data.maxReview;
+
+      this.minReview = <IReview>data.minReview;
+
+      this.loadingReviews = false;
     });
   }
 

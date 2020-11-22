@@ -39,6 +39,11 @@ const getReviews: Handler = async (req, res, next) => {
     }
 
     let reviews: ReviewModel[] | null = null;
+
+    let maxReview: ReviewModel | null = null;
+
+    let minReview: ReviewModel | null = null;
+
     let awaitingResponseCount: number | null = null;
 
     // attach number of reviews which have not received a reply yet if the request made by an owner
@@ -54,9 +59,32 @@ const getReviews: Handler = async (req, res, next) => {
       reviews = <ReviewModel[]>await Review.find(<ReviewModel>{
         restaurant: restaurantId,
       }).populate('user');
+
+      // get newest max and min reviews
+
+      maxReview = <ReviewModel>await Review.findOne({
+        restaurant: restaurantId,
+      })
+        .populate('user')
+        .sort({ rating: -1, createdAt: -1 });
+
+      minReview = <ReviewModel>await Review.findOne({
+        restaurant: restaurantId,
+
+        // make sure min is not equal to max
+        _id: { $ne: maxReview?._id },
+      })
+        .populate('user')
+        .sort({ rating: 1, createdAt: -1 });
     }
 
     res.locals.reviews = reviews;
+
+    // atach values to the resulting object
+
+    res.locals.maxReview = maxReview;
+
+    res.locals.minReview = minReview;
 
     res.locals.awaitingResponseCount = awaitingResponseCount;
 

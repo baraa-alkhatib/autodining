@@ -22,7 +22,7 @@ export class ReviewItemComponent {
 
   @Input() public showOnlyComment!: boolean;
 
-  @Input() public owner?: Partial<IUser>;
+  @Input() public owner!: IUser;
 
   @Output() public reviewChanged!: EventEmitter<IReview>;
 

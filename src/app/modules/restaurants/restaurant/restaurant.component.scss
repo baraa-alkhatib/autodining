@@ -27,12 +27,16 @@
 }
 
 .item__rating-container {
-margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .item__rating-container__reviews {
   white-space: nowrap;
   text-align: right;
+}
+
+.card__comments-no-reviews {
+  text-align: center;
 }
 
 .card__comments-headline {
