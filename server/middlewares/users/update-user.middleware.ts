@@ -19,7 +19,7 @@ const updateUser: Handler = async (req, res, next) => {
 
     // validate request
     if (userType !== 'admin' && reqUserId !== userId) {
-      // if non-admin user is requesting on behalf of another user, throw error 403 (forbidden)
+      // if non-admin user is requesting on behalf of another user, throw error 403 (Forbidden)
       throw createError(new Error('Non-admin user is requesting on behalf of another'), {
         client: 'You do not have the necessary permissions!',
         statusCode: 403,

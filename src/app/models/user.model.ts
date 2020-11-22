@@ -9,4 +9,5 @@ export interface IUser {
   email: string;
   type: 'admin' | 'owner' | 'regular';
   imageUrl: string;
+  restaurantsCount?: number;
 }

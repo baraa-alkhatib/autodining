@@ -29,6 +29,7 @@ import { StarRatingComponent } from '../components/star-rating/star-rating.compo
 import { AssetPathResolvePipe } from '../pipes/asset-path-resolve.pipe';
 import { AngularFlexLayoutModule } from './angular-flex-layout/angular-flex-layout.module';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { NavigatorComponent } from '../components/navigator/navigator.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
     DeleteFormComponent,
     LogoutFormComponent,
     FileUploadComponent,
+    NavigatorComponent,
     // pipes
     AssetPathResolvePipe,
   ],
@@ -101,6 +103,7 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
     DeleteFormComponent,
     LogoutFormComponent,
     FileUploadComponent,
+    NavigatorComponent,
     // expotr pipes
     AssetPathResolvePipe,
   ],

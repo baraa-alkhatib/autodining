@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { DeleteFormComponent } from '../../../components/delete-form/delete-form.component';
 import { IUser } from '../../../models/user.model';
 import { AuthService } from '../../../services/auth.service';
 import { UserService } from '../../../services/user.service';
-
 import { CustomValidators } from '../../../utils/custom-validators.utils';
 
 @Component({
@@ -26,6 +27,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   public user!: IUser;
 
+  public editor$!: Observable<IUser>;
+
   public image!: {
     fileName: string;
     fileType: 'image' | 'file input';
@@ -43,6 +46,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _acitvatedRoute: ActivatedRoute,
     private _fb: FormBuilder,
+    private _dialog: MatDialog,
     private _snackBar: MatSnackBar
   ) {
     // initailize subscriptions array
@@ -53,6 +57,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
       fileName: '',
       fileType: 'image',
     };
+
+    // set the editor user
+    this.editor$ = this._authServ.user$;
   }
 
   public async ngOnInit(): Promise<void> {
@@ -137,9 +144,16 @@ export class UserFormComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (user: IUser) => {
+          let navigateTo = '/';
+
           if (this._authServ.user._id === this.user._id) {
             // update user
             this._authServ.patchUser(user);
+            // redirect to main page
+            navigateTo = '/';
+          } else {
+            // redirect to users
+            navigateTo = '/users';
           }
 
           // update form with new user data
@@ -154,9 +168,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
           // update preview image
           this.image = { fileName: user.imageUrl, fileType: 'image' };
 
-          // show info message
-          this._snackBar.open(`User updated!`, '', {
-            duration: 2500,
+          this._router.navigateByUrl(navigateTo, { replaceUrl: true }).then(() => {
+            // show info message
+            this._snackBar.open(`User updated!`, '', {
+              duration: 2500,
+            });
           });
         },
         (err) => {
@@ -181,6 +197,40 @@ export class UserFormComponent implements OnInit, OnDestroy {
           });
         }
       );
+  }
+
+  /**
+   * Opens user delete form in a popup window
+   * @param {IUser} user
+   * @memberof UsersComponent
+   */
+  public onOpenDeleteDialog(): void {
+    const deleteDialog = this._dialog.open(DeleteFormComponent, {
+      data: { target: 'user', name: 'your account' },
+      width: '500px',
+    });
+
+    this._subscriptions$.push(
+      deleteDialog.afterClosed().subscribe((confirmed) => {
+        if (confirmed) {
+          this._userServ.deleteUser(this.user._id).subscribe(
+            () => {
+              // redirect to main page
+              this._router.navigateByUrl('/', { replaceUrl: true }).then(() => {
+                this._snackBar.open(`Bye :(`, '', {
+                  duration: 2500,
+                });
+              });
+            },
+            () => {
+              this._snackBar.open(`Something went wrong!`, '', {
+                duration: 2500,
+              });
+            }
+          );
+        }
+      })
+    );
   }
 
   /**

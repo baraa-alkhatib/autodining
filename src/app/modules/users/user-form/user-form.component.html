@@ -1,4 +1,10 @@
 <mat-card class="user-card">
+  <app-navigator
+    [link]="(editor$ | async)?._id === user._id ? '/home' : '/users'"
+    [title]="(editor$ | async)?._id === user._id ? 'Home page' : 'Users page'"
+    [icon]="(editor$ | async)?._id === user._id ? 'home' : 'supervisor_account'"
+  ></app-navigator>
+
   <mat-card-header flxLayout="row" fxLayoutAlign="center">
     <mat-card-title class="user-card__title"> Profile Settings </mat-card-title>
   </mat-card-header>
@@ -21,6 +27,7 @@
 
       <mat-form-field class="user-card__email">
         <input matInput type="text" placeholder="Name" formControlName="name" />
+
         <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
           <div
             *ngIf="name?.errors?.minlength || (name?.errors?.maxlength && name?.value?.length > 0)"
@@ -77,9 +84,21 @@
         </div>
       </div>
 
-      <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid">
-        Update
-      </button>
+      <div fxLayout="column" fxLayoutGap="15px">
+        <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid">
+          Update
+        </button>
+
+        <button
+          mat-button
+          color="warn"
+          (click)="onOpenDeleteDialog()"
+          *ngIf="(editor$ | async)?._id === user._id"
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
     </form>
     <br />
   </mat-card-content>

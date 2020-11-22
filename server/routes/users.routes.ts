@@ -11,7 +11,7 @@ const router = express.Router();
 
 // get users
 router.get('/', disallowUserOwner, disallowUserRegular, getUsers, (req, res) => {
-  res.status(200).json({ users: res.locals.users });
+  res.status(200).json({ users: res.locals.users, total: res.locals.usersCount });
 });
 
 // get user by id

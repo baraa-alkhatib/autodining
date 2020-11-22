@@ -1,12 +1,22 @@
 <div class="container">
   <h2 mat-dialog-title class="container__title">Delete {{ target }}</h2>
+
   <mat-dialog-content class="container__content">
     <!-- <mat-form-field></mat-form-field> -->
-    Are you sure you want to delete this {{ target }}?
+
+    <span *ngIf="name; else targetTemplate">
+      Are you sure you want to delete
+      <strong class="container__content__name">{{ name }}?</strong>
+    </span>
+
+    <ng-template #targetTemplate>
+      <span> Are you sure you want to delete this {{ target }}? </span>
+    </ng-template>
   </mat-dialog-content>
 
-  <mat-dialog-actions  fxLayout="row" fxLayoutAlign="flex-end center">
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="flex-end center">
     <button mat-raised-button (click)="onClose()">Cancel</button>
+
     <button mat-raised-button (click)="onConfirm()" color="primary">Delete</button>
   </mat-dialog-actions>
 </div>

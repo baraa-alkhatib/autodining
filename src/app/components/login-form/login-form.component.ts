@@ -122,11 +122,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
                 break;
               }
 
-              case 401: {
-                this.errorMessage = 'You do not have the necessary permissions!';
-                break;
-              }
-
               case 500: {
                 this.errorMessage = 'Something went wrong. Please try again later!';
                 break;

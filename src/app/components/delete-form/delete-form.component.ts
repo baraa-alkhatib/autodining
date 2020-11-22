@@ -8,14 +8,18 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeleteFormComponent {
-  public target!: 'user' | 'review' | 'restaurant' | 'reply';
+  public target?: 'user' | 'review' | 'restaurant' | 'reply';
+
+  public name?: string;
 
   constructor(
     @Optional() private _matDialogRef: MatDialogRef<DeleteFormComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { target: 'user' | 'review' | 'restaurant' | 'reply' }
+    public data: { target?: 'user' | 'review' | 'restaurant' | 'reply'; name?: string }
   ) {
     this.target = data.target;
+
+    this.name = data.name;
   }
 
   /**

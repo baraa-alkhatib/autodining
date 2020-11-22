@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { Page404Component } from './components/page404/page404.component';
+import { OnlyLoggedInGuard } from './guards/only-logged-in.guard';
 import { OnlyLoggedOutGuard } from './guards/only-logged-out.guard';
 import { RouterPathResolver } from './resolvers/router-path.resolver';
 
@@ -19,6 +20,8 @@ const routes: Routes = [
   {
     path: 'users',
     loadChildren: () => import('./modules/users/users.module').then((m) => m.UsersModule),
+    canLoad: [OnlyLoggedInGuard],
+    canActivate: [OnlyLoggedInGuard],
   },
   {
     path: 'restaurants',

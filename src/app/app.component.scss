@@ -22,17 +22,19 @@ mat-sidenav {
 /*
  * [1] Height covers the full page except for the room at the top made for the header
  * [2] Set a scrollbar on y axis
- * [3] Set the position to relative for [4]
- * [4] Set a space for the header on top
- * [5] Make sure to hide main behind all other elements
+ * [3] Hide the scrollbar on x axix
+ * [4] Set the position to relative for [5]
+ * [5] Set a space for the header on top
+ * [6] Make sure to hide main behind all other elements
  */
 
 .main {
   height: calc(100% - 64px); // [1]
   overflow-y: scroll; // [2]
-  position: relative; // [3]
-  top: 64px; // [4]
-  z-index: -1; // [5]
+  overflow-x: hidden; // [3]
+  position: relative; // [4]
+  top: 64px; // [5]
+  z-index: -1; // [6]
 }
 
 /*
@@ -45,4 +47,16 @@ mat-sidenav {
   top: 0;
   width: 100%;
   z-index: 100;
+}
+
+
+/*
+ * On small screens the height of the header shrinks to 56px
+ */
+
+@media (max-width: 600px) {
+  .main {
+    height: calc(100% - 56px);
+    top: 56px;
+  }
 }

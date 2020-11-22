@@ -4,7 +4,7 @@ import createError from '../utils/error.utils';
 
 /**
  * Permits only logged in users to carry on to the next middleware
- * If the user is logged out, it throws error 403 (forbidden)
+ * If the user is logged out, it throws error 403 (Forbidden)
  * @param {*} req
  * @param {*} res
  * @param {*} next
@@ -18,10 +18,10 @@ const onlyLoggedIn: Handler = (req, res, next) => {
       }
 
       if (!user) {
-        // if they are logged in throw error 403 (forbidden)
+        // if they are logged in throw error 401 (Unauthorized)
         throw createError(err, {
-          client: 'You do not have the necessary permissions!',
-          statusCode: 403,
+          client: 'You need to login first!',
+          statusCode: 401,
         });
       }
 

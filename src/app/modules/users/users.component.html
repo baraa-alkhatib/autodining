@@ -1,0 +1,69 @@
+<app-navigator></app-navigator>
+
+<h1 class="table-title">Users Table</h1>
+
+<div class="table-container mat-elevation-z8">
+  <div class="table-container__loading-shade" *ngIf="isLoadingResults || loadingError">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="table-container__error" *ngIf="loadingError">Something went wrong!</div>
+  </div>
+
+  <div class="table-container__inner">
+    <table
+      mat-table
+      [dataSource]="users"
+      class="example-table"
+      matSort
+      matSortActive="createdAt"
+      matSortDisableClear
+      matSortDirection="desc"
+    >
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+
+      <!-- Created Column -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Created</th>
+        <td mat-cell *matCellDef="let row">{{ row.createdAt | date }}</td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+        <td mat-cell *matCellDef="let row">{{ row.type }}</td>
+      </ng-container>
+
+      <!-- Restaurants Column -->
+      <ng-container matColumnDef="restaurantsCount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Restaurants</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.type === 'regular' ? '-' : row.restaurantsCount || 0 }}
+        </td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let row">
+          <a mat-button [routerLink]="'/users/' + row._id + '/edit'"><mat-icon>edit</mat-icon></a>
+          <button
+            mat-button
+            color="warn"
+            (click)="onOpenDeleteDialog(row)"
+            *ngIf="row._id !== admin._id"
+          >
+            Delete
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator>
+</div>

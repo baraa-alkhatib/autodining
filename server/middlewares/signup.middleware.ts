@@ -36,7 +36,7 @@ const signup: RequestHandler = async (req, res, next) => {
     const user = await User.findOne({ email: email.trim() });
 
     if (user) {
-      // if user is present throw error 403 (forbidden)
+      // if user is present throw error 403 (Forbidden)
       throw createError(new Error('User already exists'), {
         client: 'already exists',
         statusCode: 403,
