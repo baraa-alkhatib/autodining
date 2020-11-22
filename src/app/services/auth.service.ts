@@ -139,7 +139,7 @@ export class AuthService {
   }
 
   /**
-   * Updates subscribers to _user BehaviourSubject with the most recent version of user data
+   * Updates subscribers to _user$ BehaviourSubject with the most recent version of user data
    * @param {Partial<IUser>} data
    * @memberof AuthService
    */

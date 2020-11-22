@@ -1,11 +1,49 @@
-<div class="restaurants-sort"></div>
 <div class="restaurants-count"></div>
+<div class="header">
+  <h3 class="header__search-text" fxLayout="row" fxLayoutAlign="start center">
+    Finding restaurants with your filter options <mat-icon>search</mat-icon>
+  </h3>
+  <br />
+  <div *ngIf="restaurants?.length && !isLoadingResults">{{ restaurants.length }} Restaurants</div>
+  <div
+    fxFill
+    fxLayout="row"
+    fxFlexAlign="center center"
+    *ngIf="!restaurants?.length && !isLoadingResults"
+  >
+    <div>No Restaurats were found!</div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="end center" class="header__new">
+    <a mat-button color="primary" class="header__new__link" routerLink="/restaurants/new">
+      <mat-icon>add_circle</mat-icon> Restaurant
+    </a>
+  </div>
+</div>
+
 <div class="restaurants-list">
   <mat-list>
-    <app-restaurant-item
-      *ngFor="let restaurant of restaurants"
-      [restaurant]="restaurant"
-      [showOptions]="true"
-    ></app-restaurant-item>
+    <!--
+      * show options (edit/delete) to admins and the restaurant owner
+     -->
+    <ng-container *ngIf="user$ | async as user">
+      <div *ngIf="restaurants?.length || isLoadingResults">
+        <app-restaurant-item
+          *ngFor="let restaurant of restaurants"
+          [restaurant]="restaurant"
+          [showOptions]="user._id === restaurant.user || user.type === 'admin'"
+          (restaurantDeleted)="onDeleteRestaurant()"
+        ></app-restaurant-item>
+      </div>
+    </ng-container>
   </mat-list>
+</div>
+
+<div
+  fxFill
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  *ngIf="isLoadingResults || loadingError"
+>
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  <div class="loading-error" *ngIf="loadingError">Something went wrong!</div>
 </div>

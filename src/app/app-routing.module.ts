@@ -13,7 +13,7 @@ const routes: Routes = [
     canLoad: [OnlyLoggedOutGuard],
     canActivate: [OnlyLoggedOutGuard],
   },
-  { path: 'home', component: HomeComponent },
+  { path: 'home', component: HomeComponent, canActivate: [OnlyLoggedInGuard] },
   { path: 'login', redirectTo: '/auth/login', pathMatch: 'full' },
   { path: 'signup', redirectTo: '/auth/signup', pathMatch: 'full' },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -27,10 +27,14 @@ const routes: Routes = [
     path: 'restaurants',
     loadChildren: () =>
       import('./modules/restaurants/restaurants.module').then((m) => m.RestaurantsModule),
+    canLoad: [OnlyLoggedInGuard],
+    canActivate: [OnlyLoggedInGuard],
   },
   {
     path: 'reviews',
     loadChildren: () => import('./modules/reviews/reviews.module').then((m) => m.ReviewsModule),
+    canLoad: [OnlyLoggedInGuard],
+    canActivate: [OnlyLoggedInGuard],
   },
   {
     path: '**',

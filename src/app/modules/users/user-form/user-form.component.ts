@@ -201,8 +201,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   /**
    * Opens user delete form in a popup window
-   * @param {IUser} user
-   * @memberof UsersComponent
+   * @memberof UserFormComponent
    */
   public onOpenDeleteDialog(): void {
     const deleteDialog = this._dialog.open(DeleteFormComponent, {

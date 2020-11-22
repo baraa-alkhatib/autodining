@@ -12,7 +12,9 @@ const updateRestaurant: Handler = async (req, res, next) => {
 
     const restaurantId = req.params.id;
 
-    const { name, description, address, imageUrl, status } = req.body;
+    const { name, description, address, status } = req.body;
+
+    const imageUrl: string = req.file?.filename;
 
     // validate inputs
     if (status && status !== 'open' && status !== 'closed') {

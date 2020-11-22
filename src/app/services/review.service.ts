@@ -19,16 +19,17 @@ export class ReviewService {
    */
   public getReviews(
     restaurantId: string,
-    pendingCount: 1 | undefined,
-    reviewsList: 1 | undefined
+    pendingCount?: 1,
+    reviewsList?: 1
   ): Observable<IReview[]> {
     const url = API.getReviews;
 
-    const queryParams: any = { restaurantId };
+    const queryParams: { [param: string]: string } = { restaurantId };
 
     if (pendingCount) {
       queryParams.pendingCount = `${pendingCount}`;
     }
+
     if (reviewsList) {
       queryParams.reviewsList = `${reviewsList}`;
     }
@@ -74,10 +75,10 @@ export class ReviewService {
     );
   }
 
-  public deleteReview(reviewId: string, deleteReply: 1 | undefined): Observable<any> {
+  public deleteReview(reviewId: string, deleteReply?: 1): Observable<any> {
     const url = API.deleteReview.replace(':reviewId', reviewId);
 
-    const queryParams: any = {};
+    const queryParams: { [param: string]: string } = {};
 
     if (deleteReply) {
       queryParams.deleteReply = `${deleteReply}`;

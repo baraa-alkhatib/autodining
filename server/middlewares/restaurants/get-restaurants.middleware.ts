@@ -1,4 +1,5 @@
 import { Handler } from 'express';
+import * as mongoose from 'mongoose';
 import Restaurant from '../../db/models/restaurant.mongodb.model';
 import Review from '../../db/models/review.mongodb.model';
 import { UserModel } from '../../db/models/user.mongodb.model';
@@ -36,7 +37,7 @@ const getRestaurants: Handler = async (req, res, next) => {
 
     if (userType === 'owner') {
       // TODO: alternatively validate request to make sure owners do not makes requests on others' restaurants
-      filter.user = reqUserId;
+      filter.user = mongoose.Types.ObjectId(reqUserId);
     }
 
     // return restaurants with status open/closed
@@ -48,46 +49,59 @@ const getRestaurants: Handler = async (req, res, next) => {
     if (Number(orderAlphabetically) === 1) {
       sort.name = 1;
     } else {
-      sort.reviews = { rating: -1 };
+      sort.rating = 1;
     }
 
     const restaurants = await Restaurant.aggregate([
       // match restaurants with filter
       { $match: filter },
+
       // get average rating
       {
         $lookup: {
-          // rating is stored in reviews
+          // rating is stored in reviews collection
           from: Review.collection.name,
-          let: { review: '$_id' },
+
+          let: { restaurant: '$_id' },
+
           pipeline: [
-            // match reviews with same restaurant id
+            // match reviews connected to the same restaurant id
             {
               $match: {
-                $expr: { $eq: ['$_id', '$$review'] },
+                $expr: { $eq: ['$restaurant', '$$restaurant'] },
               },
             },
+
+            {
+              $project: {
+                _id: 0,
+                restaurant: 1,
+                rating: 1,
+                pending: { $cond: [{ $ifNull: ['$reply', true] }, 1, 0] },
+              },
+            },
+
             // group reviews and get average rating and count
             {
               $group: {
-                _id: '$_id',
+                _id: '$restaurant',
                 count: { $sum: 1 },
                 averageRating: { $avg: '$rating' },
+                pendingReviews: { $sum: '$pending' },
               },
             },
           ],
+
           // return reviews array
           as: 'reviews',
         },
       },
+
       // unwind reviews array in order to sort by rating if requested
       {
         $unwind: { path: '$reviews', preserveNullAndEmptyArrays: true },
       },
-      // use the custom sort object to sort the resulting restaurants array
-      { $sort: sort },
-      // return restaurants with smalles number of stars requested (Default: 0)
-      { $match: { $gt: Number(smallestNumberOfStars || 0) } },
+
       // return the necessary fields
       {
         $project: {
@@ -99,9 +113,24 @@ const getRestaurants: Handler = async (req, res, next) => {
           imageUrl: 1,
           status: 1,
           createdAt: 1,
-          reviews: 1,
+          rating: '$reviews.averageRating',
+          reviewsCount: '$reviews.count',
+          pendingReviews:
+            userType === 'owner' || userType === 'admin' ? '$reviews.pendingReviews' : 0,
         },
       },
+
+      // return restaurants with smalles number of stars requested (Default: all)
+      {
+        $match: smallestNumberOfStars
+          ? {
+              rating: { $gt: Number(smallestNumberOfStars) },
+            }
+          : {},
+      },
+
+      // use the custom sort object to sort the resulting restaurants array
+      { $sort: sort },
     ]);
 
     res.locals.restaurants = restaurants;

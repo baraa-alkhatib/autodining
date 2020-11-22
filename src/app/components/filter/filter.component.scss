@@ -1,0 +1,22 @@
+.container__item {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  color: #939393;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.small-icon {
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
+}
+
+.container__item--active {
+  color: green !important;
+}
+
+.container__status:hover {
+  color: green !important;
+}

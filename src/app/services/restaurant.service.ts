@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { API } from '../../environments/environment';
 import IRestaurantItem from '../models/restaurant-item.model';
@@ -11,7 +11,82 @@ import IRestaurant from '../models/restaurant.model';
   providedIn: 'root',
 })
 export class RestaurantService {
-  constructor(private _http: HttpClient) {}
+  /**
+   * - Holds the most recent restaurants filter object.
+   * - Emits the most recent restaurants filter object to a new subscriber.
+   * - Emits restaurants filter object to the subscribers whenever it changes.
+   * @private
+   * @type {(BehaviorSubject<{
+   *     orderAlphabetically?: 1;
+   *     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
+   *     status?: 'open' | 'closed';
+   *   }>)}
+   * @memberof RestaurantService
+   */
+  private readonly _restaurantsFilter$!: BehaviorSubject<{
+    orderAlphabetically?: 1;
+    smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
+    status?: 'open' | 'closed';
+  }>;
+
+  /**
+   * Returns an observable that is going to emit the last restaurants filter object
+   * and the subsequent changes
+   * @readonly
+   * @type {(Observable<{
+   *     orderAlphabetically?: 1;
+   *     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
+   *     status?: 'open' | 'closed';
+   *   }>)}
+   * @memberof RestaurantService
+   */
+  public get restaurantsFilter$(): Observable<{
+    orderAlphabetically?: 1;
+    smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
+    status?: 'open' | 'closed';
+  }> {
+    return this._restaurantsFilter$.asObservable();
+  }
+
+  /**
+   * Returns the current restaurants filter object
+   * @readonly
+   * @type {({
+   *     orderAlphabetically?: 1;
+   *     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
+   *     status?: 'open' | 'closed';
+   *   })}
+   * @memberof RestaurantService
+   */
+  public get restaurantsFilter(): {
+    orderAlphabetically?: 1;
+    smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
+    status?: 'open' | 'closed';
+  } {
+    return this._restaurantsFilter$.value;
+  }
+
+  constructor(private _http: HttpClient) {
+    // assign a new BehaviorSubject
+    this._restaurantsFilter$ = new BehaviorSubject(<any>(<unknown>{}));
+  }
+
+  /**
+   * Emits a new rstaurants filter object
+   * @param {({
+   *     orderAlphabetically?: 1;
+   *     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
+   *     status?: 'open' | 'closed';
+   *   })} filter
+   * @memberof RestaurantService
+   */
+  public dispatchRestaurantsFilter(filter: {
+    orderAlphabetically?: 1;
+    smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
+    status?: 'open' | 'closed';
+  }) {
+    this._restaurantsFilter$.next(filter);
+  }
 
   /**
    * TODO: format response
@@ -20,20 +95,20 @@ export class RestaurantService {
    * @memberof RestaurantService
    */
   public getRestaurants(filter: {
-    orderAlphabetically: 1;
-    smallestNumberOfStars: 1 | 2 | 3 | 4 | 5 | undefined;
-    status: 'open' | 'closed' | undefined;
+    orderAlphabetically?: 1;
+    smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
+    status?: 'open' | 'closed';
   }): Observable<{ restaurants: IRestaurantItem[] }> {
     const url = API.getRestaurants;
 
-    const queryParams: any = {};
+    const queryParams: { [param: string]: string } = {};
 
     if (filter?.orderAlphabetically) {
-      queryParams.orderAlphabetically = filter.orderAlphabetically;
+      queryParams.orderAlphabetically = `${filter.orderAlphabetically}`;
     }
 
     if (filter?.smallestNumberOfStars) {
-      queryParams.smallestNumberOfStars = filter.smallestNumberOfStars;
+      queryParams.smallestNumberOfStars = `${filter.smallestNumberOfStars}`;
     }
 
     if (filter?.status) {

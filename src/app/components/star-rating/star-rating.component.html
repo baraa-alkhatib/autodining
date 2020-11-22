@@ -5,10 +5,11 @@
   *ngFor="let star of starsArr; index as i"
   [id]="'star_' + i"
   (click)="!presentOnly && onClick(i + 1)"
-  [matTooltip]="getStarNumber(star)"
+  [matTooltip]="isDisabled || presentOnly ? '' : getStarNumber(star)"
   matTooltipPosition="above"
   [class.present-only]="presentOnly"
   class="star"
+  [style.color]="rating === 0 || isDisabled ? 'inherit' : null"
 >
   <mat-icon>
     {{ showStarIcon(i) }}

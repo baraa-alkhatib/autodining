@@ -61,7 +61,7 @@ export class AppComponent implements OnDestroy {
       if (confirmed) {
         this._authServ.logout().then(() => {
           // redirect to main page
-          this._router.navigateByUrl('/', { replaceUrl: true }).then(() => {
+          this._router.navigateByUrl('/login', { replaceUrl: true }).then(() => {
             this._snackBar.open(`You have logged out successfully!`, '', {
               duration: 2500,
             });

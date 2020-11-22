@@ -1,5 +1,25 @@
-<mat-list>
-  <mat-list-item> Pepper </mat-list-item>
-  <mat-list-item> Salt </mat-list-item>
-  <mat-list-item> Paprika </mat-list-item>
- </mat-list>
+<div class="container">
+  <div
+    (click)="onToggleIsOpen()"
+    fxlayout="row"
+    fxLayoutAlign="space-between center"
+    [ngClass]="{ 'container__item--active': isOpen }"
+    class="container__item container__status"
+  >
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+      <mat-icon class="small-icon">fiber_manual_record</mat-icon>
+      <div>open</div>
+    </div>
+    <mat-checkbox fixFill [(ngModel)]="isOpen"></mat-checkbox>
+  </div>
+  <div fxlayout="row" fxLayoutAlign="space-between center" class="container__item">
+    <div (click)="onRatingUpdated(0)">Rating</div>
+    <app-star-rating
+      [rating]="stars"
+      [starCount]="5"
+      [color]="'accent'"
+      [presentOnly]="false"
+      (ratingUpdated)="onRatingUpdated($event)"
+    ></app-star-rating>
+  </div>
+</div>

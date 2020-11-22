@@ -34,17 +34,17 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private _deleteUser$!: Subject<any>;
 
-  public displayedColumns: string[] = ['name', 'createdAt', 'type', 'restaurantsCount', 'actions'];
+  public displayedColumns: string[];
 
-  public users: IUser[] = [];
+  public users: IUser[];
 
   public admin!: IUser;
 
-  public resultsLength = 0;
+  public resultsLength: number;
 
-  public isLoadingResults = true;
+  public isLoadingResults: boolean;
 
-  public loadingError = false;
+  public loadingError: boolean;
 
   @ViewChild(MatPaginator) public paginator!: MatPaginator;
 
@@ -61,6 +61,17 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // initialize subject
     this._deleteUser$ = new Subject();
+
+    // initialize
+    this.displayedColumns = ['name', 'createdAt', 'type', 'restaurantsCount', 'actions'];
+
+    this.users = [];
+
+    this.resultsLength = 0;
+
+    this.isLoadingResults = true;
+
+    this.loadingError = false;
   }
 
   public ngOnInit(): void {
@@ -73,39 +84,41 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
       this.paginator.pageIndex = 0;
     });
 
-    merge(this.sort.sortChange, this.paginator.page, this._deleteUser$)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          this.isLoadingResults = true;
+    this._subscriptions$.push(
+      merge(this.sort.sortChange, this.paginator.page, this._deleteUser$)
+        .pipe(
+          startWith({}),
+          switchMap(() => {
+            this.isLoadingResults = true;
 
-          return this._userServ.getUsers({
-            sortBy: <'name' | 'createdAt' | 'type' | 'restaurantsCount'>this.sort.active,
-            order: <'asc' | 'desc'>this.sort.direction,
-            page: this.paginator.pageIndex,
-          });
-        }),
-        map((data) => {
-          // flip flag to show that loading has finished.
-          this.isLoadingResults = false;
+            return this._userServ.getUsers({
+              sortBy: <'name' | 'createdAt' | 'type' | 'restaurantsCount'>this.sort.active,
+              order: <'asc' | 'desc'>this.sort.direction,
+              page: this.paginator.pageIndex,
+            });
+          }),
+          map((data) => {
+            // flip flag to show that loading has finished.
+            this.isLoadingResults = false;
 
-          this.loadingError = false;
+            this.loadingError = false;
 
-          this.resultsLength = data.total;
+            this.resultsLength = data.total;
 
-          return data.users;
-        }),
-        catchError(() => {
-          this.isLoadingResults = false;
+            return data.users;
+          }),
+          catchError(() => {
+            this.isLoadingResults = false;
 
-          // return empty data array on error
-          this.loadingError = true;
-          return of([]);
+            // return empty data array on error
+            this.loadingError = true;
+            return of([]);
+          })
+        )
+        .subscribe((users) => {
+          this.users = users;
         })
-      )
-      .subscribe((users) => {
-        this.users = users;
-      });
+    );
   }
 
   /**

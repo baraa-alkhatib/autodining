@@ -1,0 +1,30 @@
+.restaurant-card__title,
+.restaurant-card__subtitle {
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.2rem;
+}
+
+.restaurant-card__subtitle {
+  text-transform: capitalize;
+}
+
+.restaurant-card__form {
+  font-size: 1.2rem;
+}
+
+.restaurant-card__photo {
+  display: block;
+  width: 100px;
+  height: 100px;
+}
+
+.restaurant-card__name,
+.restaurant-card__description,
+.restaurant-card__address {
+  margin-bottom: 30px;
+}
+
+.restaurant-card__extra {
+  padding: 30px 0;
+}

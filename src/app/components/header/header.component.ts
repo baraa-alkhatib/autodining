@@ -1,6 +1,4 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { IUser } from '../../models/user.model';
@@ -66,12 +64,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   public user$!: Observable<IUser>;
 
-  constructor(
-    private _router: Router,
-    private _authServ: AuthService,
-    private _snackBar: MatSnackBar,
-    private _dialog: MatDialog
-  ) {
+  constructor(private _router: Router, private _authServ: AuthService) {
     // initailize subscriptions array
     this._subscriptions$ = [];
 
