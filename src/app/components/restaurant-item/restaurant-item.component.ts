@@ -1,7 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import IRestaurantItem from '../../models/restaurant-item.model';
+import { RestaurantService } from '../../services/restaurant.service';
 import { DeleteFormComponent } from '../delete-form/delete-form.component';
 import { EditRestaurantFormComponent } from '../edit-restaurant-form/edit-restaurant-form.component';
 
@@ -21,6 +30,8 @@ export class RestaurantItemComponent implements OnDestroy {
    */
   private readonly _subscriptions$!: Subscription[];
 
+  public deleteLoading!: boolean;
+
   /**
    * Holds the non-detailed view data of a restaurnt
    * @type {IRestaurantItem}
@@ -35,9 +46,18 @@ export class RestaurantItemComponent implements OnDestroy {
    */
   @Input() public showOptions!: boolean;
 
-  constructor(private _dialog: MatDialog) {
+  @Output() public restaurantDeleted!: EventEmitter<IRestaurantItem>;
+
+  constructor(
+    private _restaurantServ: RestaurantService,
+    private _dialog: MatDialog,
+    private _snackBar: MatSnackBar
+  ) {
     // initailize subscriptions array
     this._subscriptions$ = [];
+
+    // initialize event emetters
+    this.restaurantDeleted = new EventEmitter();
   }
 
   /**
@@ -52,16 +72,35 @@ export class RestaurantItemComponent implements OnDestroy {
    * Opens restaurant delete form in a popup window
    * @memberof RestaurantItemComponent
    */
-  public onOpenDeleteDialog(): void {
+  public onOpenDeleteDialog(restaurantName: string): void {
     const deleteDialog = this._dialog.open(DeleteFormComponent, {
-      data: { target: 'restaurant' },
+      data: { target: 'restaurant', name: restaurantName },
       width: '500px',
     });
 
     this._subscriptions$.push(
       deleteDialog.afterClosed().subscribe((confirmed) => {
         if (confirmed) {
-          // TODO: delete restaurant
+          // set delete to loading
+          this.deleteLoading = true;
+          this._restaurantServ.deleteRestaurant(this.restaurant._id).subscribe(
+            () => {
+              // emit deletion event
+              this.restaurantDeleted.emit(this.restaurant);
+
+              // show info message
+              this._snackBar.open(`You have deleted ${this.restaurant.name} successfully!`, '', {
+                duration: 2500,
+              });
+            },
+            () => {
+              this.deleteLoading = false;
+
+              this._snackBar.open(`Something went wrong!`, '', {
+                duration: 2500,
+              });
+            }
+          );
         }
       })
     );

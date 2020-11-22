@@ -1,0 +1,9 @@
+<div fxLayout="row" fxFill fxLayoutAlign="center center" class="container-404">
+  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <h2 class="container-404__title">404 - Page not found</h2>
+
+    <p *ngIf="path" class="container-404__alternative">
+      You might want to go to the <a [routerLink]="path">"{{ path }}" page</a>
+    </p>
+  </div>
+</div>

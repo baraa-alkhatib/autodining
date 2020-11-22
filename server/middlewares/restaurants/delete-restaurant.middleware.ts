@@ -7,7 +7,7 @@ const deleteRestaurant: Handler = async (req, res, next) => {
     // extract necessary fields
     const userType = (<UserModel>req.user).type;
 
-    const reqUserId = (<UserModel>req.user)._id;
+    const reqUserId = (<UserModel>req.user).id;
 
     const restaurantId = req.params.id;
 
@@ -15,7 +15,7 @@ const deleteRestaurant: Handler = async (req, res, next) => {
     await Restaurant.deleteOne({
       _id: restaurantId,
       // make sure that only the admin or the owner of the restaurant is deleting the record
-      user: { _id: restaurantId, user: userType === 'admin' ? { $exists: true } : reqUserId },
+      user: userType === 'admin' ? { $exists: true } : reqUserId,
     });
 
     return next();

@@ -30,20 +30,19 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(reqClone).pipe(
       tap(() => {
         if (this._authServ.accessToken && jwtHelper.isTokenExpired(this._authServ.accessToken)) {
-          // if access token is expired log out
-          this._authServ.logout();
+          // if access token is expired log out and redirect to main page
+          this._authServ.logout().then(() => {
+            this._router.navigateByUrl('/', { replaceUrl: true });
+          });
         }
       }),
       catchError((err: HttpErrorResponse) => {
         if (err instanceof HttpErrorResponse) {
-          if (
-            err.status === 498 ||
-            (err.status === 401 &&
-              this._authServ.accessToken &&
-              jwtHelper.isTokenExpired(this._authServ.accessToken))
-          ) {
-            // token-expired | not-authorized error
-            this._authServ.logout();
+          if (err.status === 498 || err.status === 401) {
+            // token-expired | not-authorized error and redirect to main page
+            this._authServ.logout().then(() => {
+              this._router.navigateByUrl('/', { replaceUrl: true });
+            });
           }
         }
         return throwError(err);

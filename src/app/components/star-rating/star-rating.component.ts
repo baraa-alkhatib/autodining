@@ -23,6 +23,13 @@ export class StarRatingComponent implements OnInit {
   @Input() public rating!: number;
 
   /**
+   * Holds the status of rating, if true the component will emit on start clicked
+   * @type {false}
+   * @memberof StarRatingComponent
+   */
+  @Input() public isDisabled!: false;
+
+  /**
    *
    * Holds the number of total stars full/half/empty
    * @type {number}
@@ -49,26 +56,15 @@ export class StarRatingComponent implements OnInit {
    * @type {EventEmitter<number>}
    * @memberof StarRatingComponent
    */
-  @Output() public ratingUpdated: EventEmitter<number>;
-
-  /**
-   * Holds the amount of time the snack bar will appear on the screen in milliseconds
-   * @private
-   * @type {number}
-   * @memberof StarRatingComponent
-   */
-  private _snackBarDuration!: number;
+  @Output() public ratingUpdated: EventEmitter<1 | 2 | 3 | 4 | 5>;
 
   public starsArr: number[];
 
   constructor(private snackBar: MatSnackBar) {
-    // set snackbar duration to 1500 milliseconds
-    this._snackBarDuration = 1500;
-
-    // Initialize ratingUpdated
+    // initialize ratingUpdated
     this.ratingUpdated = new EventEmitter();
 
-    // Initialize starsArr
+    // initialize
     this.starsArr = [];
   }
 
@@ -98,14 +94,10 @@ export class StarRatingComponent implements OnInit {
    * - Emits the rating updated value with the number of full stars filled
    * @param {number} rating
    * @returns
-   * @memberof StarRatingComponent
+   * @memberof StarRatin  gComponent
    */
   public onClick(rating: number): false {
-    this.snackBar.open(`You rated ${rating}/${this.starCount}`, '', {
-      duration: this._snackBarDuration,
-    });
-
-    this.ratingUpdated.emit(rating);
+    this.ratingUpdated.emit(<any>rating);
 
     return false;
   }

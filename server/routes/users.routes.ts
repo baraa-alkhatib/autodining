@@ -11,7 +11,7 @@ const router = express.Router();
 
 // get users
 router.get('/', disallowUserOwner, disallowUserRegular, getUsers, (req, res) => {
-  res.status(200).json({ users: res.locals.users });
+  res.status(200).json({ users: res.locals.users, total: res.locals.usersCount });
 });
 
 // get user by id
@@ -20,7 +20,7 @@ router.get('/:id', getUser, (req, res) => {
 });
 
 // update user
-router.put('/:id', updateUser, upload, (req, res) => {
+router.put('/:id', upload('image'), updateUser, (req, res) => {
   res.status(200).json({ user: res.locals.user });
 });
 

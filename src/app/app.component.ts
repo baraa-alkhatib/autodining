@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { LogoutFormComponent } from './components/logout-form/logout-form.component';
@@ -26,7 +27,8 @@ export class AppComponent implements OnDestroy {
   constructor(
     private _dialog: MatDialog,
     private _authServ: AuthService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _router: Router
   ) {
     // initailize subscriptions array
     this._subscriptions$ = [];
@@ -58,8 +60,11 @@ export class AppComponent implements OnDestroy {
     logoutDialog.beforeClosed().subscribe((confirmed) => {
       if (confirmed) {
         this._authServ.logout().then(() => {
-          this._snackBar.open(`You have logged out successfully!`, '', {
-            duration: 2500,
+          // redirect to main page
+          this._router.navigateByUrl('/login', { replaceUrl: true }).then(() => {
+            this._snackBar.open(`You have logged out successfully!`, '', {
+              duration: 2500,
+            });
           });
         });
       }

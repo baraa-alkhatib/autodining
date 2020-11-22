@@ -1,5 +1,5 @@
-import { IUser } from '../../../server/models/user.model';
 import IRestaurant from './restaurant.model';
+import { IUser } from './user.model';
 
 /**
  * Review data model

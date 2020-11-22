@@ -17,7 +17,7 @@ const restaurantSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      required: true,
+      required: false,
     },
     status: {
       type: String,
@@ -39,6 +39,9 @@ export interface RestaurantModel extends mongoose.Document {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+// make sure the same user cannot have more than one restaurnat with the same name
+restaurantSchema.index({ user: 1, name: 1 }, { unique: true });
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 

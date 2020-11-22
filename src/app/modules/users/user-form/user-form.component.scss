@@ -1,0 +1,31 @@
+.user-card__title,
+.user-card__subtitle {
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.2rem;
+}
+
+.user-card__subtitle {
+  text-transform: capitalize;
+}
+
+
+.user-card__form {
+  font-size: 1.2rem;
+}
+
+.user-card__photo {
+  display: block;
+  width: 100px;
+  height: 100px;
+}
+
+.user-card__name,
+.user-card__email,
+.user-card__password:not(:last-child) {
+  margin-bottom: 30px;
+}
+
+.user-card__extra {
+  padding: 30px 0;
+}

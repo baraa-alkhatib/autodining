@@ -163,7 +163,17 @@ export default class ServerApp {
     // serve API
     this._app.use('/api', onlyLoggedIn, apiRoutes);
 
-    // serve static files
+    /**
+     * Serve static files in order
+     */
+
+    // serve uploaded files
+    this._app.use(
+      '/static/images',
+      express.static(path.resolve(__dirname, '../cloud/upload/images'))
+    );
+
+    // serve angular
     this._app.get('*.*', express.static(this._WWW_FOLDER));
 
     // set default route

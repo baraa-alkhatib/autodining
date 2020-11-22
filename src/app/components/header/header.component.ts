@@ -1,9 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { IUser } from '../../../../server/models/user.model';
+import { Observable, Subscription } from 'rxjs';
+import { IUser } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -60,18 +58,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public isLoggedIn!: boolean;
 
   /**
-   * Holds user's data
+   * Holds an observable of user data
    * @type {boolean}
    * @memberof HeaderComponent
    */
-  public user!: IUser;
+  public user$!: Observable<IUser>;
 
-  constructor(
-    private _router: Router,
-    private _authServ: AuthService,
-    private _snackBar: MatSnackBar,
-    private _dialog: MatDialog
-  ) {
+  constructor(private _router: Router, private _authServ: AuthService) {
     // initailize subscriptions array
     this._subscriptions$ = [];
 
@@ -99,8 +92,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // listen to login events to reflect status in the ui
     this._subscriptions$.push(
-      this._authServ.isLoggedIn().subscribe((isLoggedIn) => {
-        this.user = this._authServ.userInfo;
+      this._authServ.isLoggedIn$.subscribe((isLoggedIn) => {
+        this.user$ = this._authServ.user$;
 
         this.isLoggedIn = isLoggedIn;
       })

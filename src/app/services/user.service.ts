@@ -2,41 +2,79 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { IUser } from '../../../server/models/user.model';
+import { map, tap } from 'rxjs/operators';
 import { API } from '../../environments/environment';
+import { IUser } from '../models/user.model';
+import toFormData from '../utils/form-data.utils';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private _http: HttpClient) {}
+  constructor(private _authServ: AuthService, private _http: HttpClient) {}
 
   /**
    * Returns list of users
-   * @returns {Observable<{ users: IUser[] }>}
+   * @param {({
+   *     page: number;
+   *     sortBy: 'name' | 'createdAt' | 'type' | 'restaurantsCount';
+   *     order: 'asc' | 'desc';
+   *     search?: string;
+   *   })} filter - pages in filter are 0 based
+   * @returns {Observable<{users: IUser[], total: number}>}
    * @memberof UserService
    */
-  public getUsers(): Observable<{ users: IUser[] }> {
+  public getUsers(filter: {
+    page: number;
+    sortBy: 'name' | 'createdAt' | 'type' | 'restaurantsCount';
+    order: 'asc' | 'desc';
+    search?: string;
+  }): Observable<{ users: IUser[]; total: number }> {
     const url = API.getUsers;
 
-    return this._http.get<{ users: IUser[] }>(url);
+    const queryParams: { [param: string]: string } = {
+      page: `${filter.page}`,
+      sortBy: `${filter.sortBy}`,
+      order: `${filter.order}`,
+    };
+
+    if (filter?.search) {
+      queryParams.status = filter.search;
+    }
+
+    return this._http.get<{ users: IUser[]; total: number }>(url, { params: queryParams });
   }
 
-  public getUser(userId: string): Observable<{ user: IUser }> {
+  public getUser(userId: string): Observable<IUser> {
     const url = API.getUser.replace(':userId', userId);
 
-    return this._http.get<{ user: IUser }>(url);
+    return this._http.get<{ user: IUser }>(url).pipe(
+      map((data) => {
+        return data.user;
+      })
+    );
   }
 
-  public updateUser(userForm: NgForm, userId: string): Observable<{ user: IUser }> {
+  public updateUser(userForm: NgForm, userId: string): Observable<IUser> {
     const url = API.updateUser.replace(':userId', userId);
 
-    return this._http.put<{ user: IUser }>(url, userForm);
+    return this._http.put<{ user: IUser }>(url, toFormData(userForm)).pipe(
+      map((data) => {
+        return data.user;
+      })
+    );
   }
 
   public deleteUser(userId: string): Observable<void> {
     const url = API.deleteUser.replace(':userId', userId);
 
-    return this._http.delete<void>(url);
+    return this._http.delete<void>(url).pipe(
+      tap(() => {
+        if (userId === this._authServ.user._id) {
+          this._authServ.logout();
+        }
+      })
+    );
   }
 }

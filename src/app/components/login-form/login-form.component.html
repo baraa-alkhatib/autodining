@@ -1,5 +1,6 @@
 <mat-card class="login-card">
   <mat-card-title class="login-card__title"> Log In </mat-card-title>
+
   <mat-card-content>
     <form fxLayout="column" [formGroup]="form" (ngSubmit)="onLogin()" class="login-card__form">
       <mat-form-field class="login-card__email">
@@ -11,15 +12,18 @@
           autocomplete
           required
         />
+
         <mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
           <div *ngIf="email?.errors?.required">
             <span class="text-danger">*</span> email address is required
           </div>
+
           <div *ngIf="email?.errors?.email">
             <span class="text-danger">*</span> Please provide a valid email address
           </div>
         </mat-error>
       </mat-form-field>
+
       <mat-form-field class="login-card__password">
         <input
           matInput
@@ -29,6 +33,7 @@
           autocomplete
           required
         />
+
         <button
           mat-icon-button
           matSuffix
@@ -39,25 +44,30 @@
         >
           <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
+
         <mat-error *ngIf="password?.invalid && (password?.dirty || password?.touched)">
           <div *ngIf="password?.invalid">
             <span class="text-danger">*</span> Please provide a valid password
           </div>
         </mat-error>
       </mat-form-field>
+
       <div class="login-card__extra">
         <div fxLayout="row" fxLayoutAlign="center">
           <mat-error *ngIf="errorMessage">
             {{ errorMessage }}
           </mat-error>
+
           <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
         </div>
+
         <div>
           <a mat-button type="button" routerLink="/signup" color="primary" (click)="onClose()">
             No Account? <span class="text-bold">Create one here</span>
           </a>
         </div>
       </div>
+
       <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid">
         Login
       </button>

@@ -19,14 +19,14 @@ export class CustomValidators {
   }
 
   /** validate custom file-upload input */
-  public requiredFileType(type: string) {
-    return (control: FormControl) => {
+  public static requiredFileType(...types: string[]) {
+    return (control: Partial<FormControl>) => {
       const file = control.value;
 
       if (file) {
         const extension = file.name.split('.')[1].toLowerCase();
 
-        if (type.toLowerCase() !== extension.toLowerCase()) {
+        if (!types.includes(extension.toLowerCase())) {
           return {
             requiredFileType: true,
           };

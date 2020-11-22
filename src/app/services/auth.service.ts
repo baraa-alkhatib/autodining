@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageService } from 'ngx-webstorage-service';
-import { Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ACCESS_TOKEN_KEY, API, USER_INFO_KEY } from '../../environments/environment';
 import { IUser } from '../models/user.model';
@@ -18,10 +18,20 @@ export class AuthService {
    * - Emits the most recent authentication status to a new subscriber.
    * - Emits the authentication status to the subscribers whenever it changes.
    * @private
-   * @type {ReplaySubject<boolean>}
+   * @type {BehaviorSubject<boolean>}
    * @memberof AuthService
    */
-  private _isLoggedIn$!: ReplaySubject<boolean>;
+  private readonly _isLoggedIn$!: BehaviorSubject<boolean>;
+
+  /**
+   * - Holds the most recent user data.
+   * - Emits the most recent user data to a new subscriber.
+   * - Emits user data to the subscribers whenever it changes.
+   * @private
+   * @type {BehaviorSubject<IUser>}
+   * @memberof AuthService
+   */
+  private readonly _user$!: BehaviorSubject<IUser>;
 
   /**
    * Holds the user access token
@@ -32,12 +42,45 @@ export class AuthService {
   private _accessToken!: string;
 
   /**
-   * Holds the user data model
-   * @private
-   * @type {User}
+   * Returns an observable that is going to emit the last authentication status of the user
+   * and the subsequent changes
+   * @returns {Observable<boolean>}
    * @memberof AuthService
    */
-  private _user!: IUser;
+  public get isLoggedIn$(): Observable<boolean> {
+    return this._isLoggedIn$.asObservable();
+  }
+
+  /**
+   * Returns the current authentication status
+   * @readonly
+   * @type {boolean}
+   * @memberof AuthService
+   */
+  public get isLoggedIn(): boolean {
+    return this._isLoggedIn$.value;
+  }
+
+  /**
+   * Returns an observable that is going to emit the last user data
+   * and the subsequent changes
+   * @readonly
+   * @type {Observable<IUser>}
+   * @memberof AuthService
+   */
+  public get user$(): Observable<IUser> {
+    return this._user$.asObservable();
+  }
+
+  /**
+   * Returns the current user data
+   * @readonly
+   * @type {IUser}
+   * @memberof AuthService
+   */
+  public get user(): IUser {
+    return this._user$.value;
+  }
 
   /**
    * Returns the user access token
@@ -49,15 +92,6 @@ export class AuthService {
     return this._accessToken;
   }
 
-  /**
-   * Returns the user Info
-   * @readonly
-   * @memberof AuthService
-   */
-  public get userInfo() {
-    return this._user;
-  }
-
   constructor(
     private _http: HttpClient,
 
@@ -65,8 +99,11 @@ export class AuthService {
 
     @Inject(STORAGE_PROVIDER_TOKEN) private _storage: StorageService
   ) {
-    // assign a new ReplaySubject with buffersize 1 to store only the last value
-    this._isLoggedIn$ = new ReplaySubject(1);
+    // assign a new BehaviorSubject
+    this._isLoggedIn$ = new BehaviorSubject(<boolean>false);
+
+    // assign a new BehaviorSubject
+    this._user$ = new BehaviorSubject(<IUser>(<unknown>null));
   }
 
   public async initAuth(): Promise<void> {
@@ -75,15 +112,15 @@ export class AuthService {
 
     if (accessToken) {
       // extract user info from storage
-      const userInfo = await this._storage.get(USER_INFO_KEY);
+      const user = await this._storage.get(USER_INFO_KEY);
 
       // check if token was expired
       const isExpired = this._jwtHelper.isTokenExpired(accessToken);
 
       // if token is not expired, retrieve user information
       if (!isExpired) {
-        if (userInfo) {
-          this._user = JSON.parse(userInfo);
+        if (user) {
+          this._user$.next(JSON.parse(user));
         } else {
           // if user info is not found log out
           this.logout();
@@ -92,7 +129,7 @@ export class AuthService {
         // set access token
         this._accessToken = accessToken;
 
-        // notifiy the app of the auth state
+        // emit auth state
         this._isLoggedIn$.next(true);
       }
     } else {
@@ -102,13 +139,28 @@ export class AuthService {
   }
 
   /**
-   * Returns an observable that is going to emit the last authentication status of the user
-   * and the subsequent changes
-   * @returns {Observable<boolean>}
+   * Updates subscribers to _user$ BehaviourSubject with the most recent version of user data
+   * @param {Partial<IUser>} data
    * @memberof AuthService
    */
-  public isLoggedIn(): Observable<boolean> {
-    return this._isLoggedIn$.asObservable();
+  public patchUser(data: Partial<IUser>): void {
+    // get old user from user behaviour subject
+    const oldUser: IUser = this._user$.value;
+
+    // compose new user object with the new values
+    const newUser = {
+      _id: data._id || oldUser._id,
+      name: data.name || oldUser.name,
+      email: data.email || oldUser.email,
+      type: data.type || oldUser.type,
+      imageUrl: data.imageUrl || oldUser.imageUrl,
+    };
+
+    // emit new user
+    this._user$.next(newUser);
+
+    // update the user in storage
+    this._storage.set(USER_INFO_KEY, JSON.stringify(this._user$.getValue()));
   }
 
   /**
@@ -127,7 +179,7 @@ export class AuthService {
           this._accessToken = res.token;
 
           // set user info
-          this._user = {
+          const user = {
             _id: res.user._id,
             email: res.user.email,
             name: `${res.user.name}`,
@@ -135,8 +187,11 @@ export class AuthService {
             imageUrl: res.user.imageUrl,
           };
 
+          // emit user
+          this._user$.next(user);
+
           // save user info in storage
-          this._storage.set(USER_INFO_KEY, JSON.stringify(this._user));
+          this._storage.set(USER_INFO_KEY, JSON.stringify(this._user$.getValue()));
 
           // notifiy the app of the auth state
           this._isLoggedIn$.next(true);

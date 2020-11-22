@@ -24,7 +24,7 @@
   </div>
 
   <!-- Flex box 3 (hide in small screens) -->
-  <div fxFlex fxLayout fxLayoutAlign="end">
+  <div fxFlex fxLayout fxLayoutAlign="end center">
     <!-- Devide this section of the navbar into 2 based on screen size-->
 
     <!-- Filter -->
@@ -47,32 +47,37 @@
 
     <!-- User Menu -->
     <div fxHide.xs *ngIf="isLoggedIn">
-      <div [matMenuTriggerFor]="menu" fxLayout="row" fxLayoutAlign="start center">
-        <div
-          mat-card-avatar
-          [style.backgroundImage]="
-            'url(' + (user.imageUrl || '/assets/images/placeholders/avatar-s-19.png') + ')'
-          "
-          class="user-card__avatar"
-        ></div>
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="-10px">
-          <div class="user-card__name">{{ user?.name }}</div>
-          <div class="user-card__type" *ngIf="user?.type !== 'regular'">{{ user?.type }}</div>
-        </div>
-        <mat-menu #menu="matMenu">
-          <!-- Account Settings -->
-          <button mat-menu-item>
-            <mat-icon>settings</mat-icon>
-            <span>Settings</span>
-          </button>
+      <!-- Define a template local variable with as syntax to use async only once -->
+      <ng-container *ngIf="user$ | async as user">
+        <div [matMenuTriggerFor]="menu" fxLayout="row" fxLayoutAlign="start center">
+          <div
+            mat-card-avatar
+            [style.backgroundImage]="
+              'url(' + (user.imageUrl | assetPathResolve: 'image':'user') + ')'
+            "
+            class="user-card__avatar"
+          ></div>
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="-10px">
+            <div class="user-card__name">{{ user?.name }}</div>
+            <div class="user-card__type" *ngIf="user?.type !== 'regular'">
+              {{ user?.type }}
+            </div>
+          </div>
+          <mat-menu #menu="matMenu">
+            <!-- Account Settings -->
+            <a mat-menu-item [routerLink]="['users/' + user._id + '/edit']">
+              <mat-icon>settings</mat-icon>
+              <span>Settings</span>
+            </a>
 
-          <!-- Logout Button -->
-          <button mat-menu-item (click)="onOpenLogoutDialog()">
-            <mat-icon>logout</mat-icon>
-            <span>Logout</span>
-          </button>
-        </mat-menu>
-      </div>
+            <!-- Logout Button -->
+            <button mat-menu-item (click)="onOpenLogoutDialog()">
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+        </div>
+      </ng-container>
     </div>
   </div>
 </mat-toolbar>

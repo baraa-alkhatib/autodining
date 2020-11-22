@@ -9,15 +9,17 @@ const updateUser: Handler = async (req, res, next) => {
     // extract necessary fields
     const userType = (<UserModel>req.user).type;
 
-    const reqUserId = (<UserModel>req.user)._id;
+    const reqUserId = (<UserModel>req.user).id;
 
     const userId = req.params.id;
 
-    const { name, email, password, imageUrl }: UserModel = req.body;
+    const { name, email, password }: UserModel = req.body;
+
+    const imageUrl: string = req.file?.filename;
 
     // validate request
     if (userType !== 'admin' && reqUserId !== userId) {
-      // if non-admin user is requesting on behalf of another user, throw error 403 (forbidden)
+      // if non-admin user is requesting on behalf of another user, throw error 403 (Forbidden)
       throw createError(new Error('Non-admin user is requesting on behalf of another'), {
         client: 'You do not have the necessary permissions!',
         statusCode: 403,
@@ -27,7 +29,7 @@ const updateUser: Handler = async (req, res, next) => {
     // validate inputs
     if (
       (name && !Validator.isValidUserName(name)) ||
-      (email && !Validator.isValidUserName(email)) ||
+      (email && !Validator.isEmail(email)) ||
       (password && !Validator.isStrongPassword(password))
     ) {
       throw createError(new Error('Invalid request body'), {
@@ -36,27 +38,42 @@ const updateUser: Handler = async (req, res, next) => {
       });
     }
 
-    // construct update
-    const update: any = {};
+    // find user record
+    const user = <UserModel>await User.findById(userId);
 
+    // set the required changes on the found record
     if (name) {
-      update.name = name;
+      user.name = name;
     }
 
     if (email) {
-      update.email = email;
-    }
-
-    if (password) {
-      update.password = password;
+      user.email = email;
     }
 
     if (imageUrl) {
-      update.imageUrl = imageUrl;
+      user.imageUrl = imageUrl;
     }
 
-    // find and update user record
-    const user = await User.findByIdAndUpdate(userId, update);
+    if (password) {
+      /**
+       * - Function setPassword() is made available by passport-local-mongoose.
+       * - This function will take care of hash and salt.
+       * - This function updates the password field but does not save the document.
+       */
+      await (<any>user).setPassword(password);
+    }
+
+    // commit changes
+    try {
+      await user.save();
+    } catch (err) {
+      if (err?.code === 11000) {
+        throw createError(err, {
+          client: 'this email is already registered with another account.',
+          statusCode: 403,
+        });
+      }
+    }
 
     res.locals.user = user;
 

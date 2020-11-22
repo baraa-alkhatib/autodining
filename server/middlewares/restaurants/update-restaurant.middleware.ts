@@ -8,11 +8,13 @@ const updateRestaurant: Handler = async (req, res, next) => {
     // extract necessary fields
     const userType = (<UserModel>req.user).type;
 
-    const reqUserId = (<UserModel>req.user)._id;
+    const reqUserId = (<UserModel>req.user).id;
 
     const restaurantId = req.params.id;
 
-    const { name, description, address, imageUrl, status } = req.body;
+    const { name, description, address, status } = req.body;
+
+    const imageUrl: string = req.file?.filename;
 
     // validate inputs
     if (status && status !== 'open' && status !== 'closed') {

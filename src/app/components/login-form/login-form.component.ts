@@ -102,8 +102,9 @@ export class LoginFormComponent implements OnInit, OnDestroy {
             // close dialog
             this.close();
 
+            // redirect to main page
             this._router.navigateByUrl('/', { replaceUrl: true }).then(() => {
-              this._snackBar.open(`Welcome ${this._authServ.userInfo.name} to AutoDining!`, '', {
+              this._snackBar.open(`Welcome ${this._authServ.user.name} to AutoDining!`, '', {
                 duration: 2500,
               });
             });
@@ -116,12 +117,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               }
 
               case 404: {
-                this.errorMessage = 'There is no account registered with this email.';
-                break;
-              }
-
-              case 401: {
-                this.errorMessage = 'You do not have the necessary permissions!';
+                this.errorMessage =
+                  'The e-mail address or password you entered was incorrect. Passwords are case-sensitive.';
                 break;
               }
 

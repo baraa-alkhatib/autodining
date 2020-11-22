@@ -19,14 +19,14 @@
   border-color: rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   border-style: solid;
-  border-width: 1px;
+  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.3);
   height: 52px;
   margin-right: 10px;
   width: 52px;
 }
 
 .user-card__name {
-font-size: 1.1rem;
+  font-size: 1.1rem;
 }
 
 .user-card__type {

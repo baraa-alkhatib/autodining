@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { AuthService } from '../../services/auth.service';
 import { CustomValidators } from '../../utils/custom-validators.utils';
@@ -104,36 +105,47 @@ export class SignupFormComponent implements OnInit, OnDestroy {
   }
 
   public onSignup(): void {
-    this._authServ.signup(this.form.value).subscribe(
-      () => {
-        this._router.navigateByUrl('/login', { replaceUrl: true }).then(() => {
-          this._snackBar.open(`You have registered successfully!`, '', {
-            duration: 2500,
+    this.errorMessage = '';
+
+    this.showSpinner = true;
+
+    this._authServ
+      .signup(this.form.value)
+      .pipe(
+        finalize(() => {
+          this.showSpinner = false;
+        })
+      )
+      .subscribe(
+        () => {
+          this._router.navigateByUrl('/login', { replaceUrl: true }).then(() => {
+            this._snackBar.open(`You have registered successfully!`, '', {
+              duration: 2500,
+            });
           });
-        });
-      },
-      (err) => {
-        switch (err && err.status) {
-          case 403: {
-            if (err?.error?.error === 'already exists') {
-              this.errorMessage = 'This user already exists!';
-            } else {
-              this.errorMessage = 'You do not have the necessary permissions!';
+        },
+        (err) => {
+          switch (err && err.status) {
+            case 403: {
+              if (err?.error?.error === 'already exists') {
+                this.errorMessage = 'This user already exists!';
+              } else {
+                this.errorMessage = 'You do not have the necessary permissions!';
+              }
+              break;
             }
-            break;
-          }
 
-          case 500: {
-            this.errorMessage = 'Something went wrong. Please try again!';
-            break;
-          }
+            case 500: {
+              this.errorMessage = 'Something went wrong. Please try again!';
+              break;
+            }
 
-          default: {
-            this.errorMessage = 'Something went wrong!';
+            default: {
+              this.errorMessage = 'Something went wrong!';
+            }
           }
         }
-      }
-    );
+      );
   }
 
   /**

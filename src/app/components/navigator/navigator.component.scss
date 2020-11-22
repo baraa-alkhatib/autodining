@@ -1,0 +1,16 @@
+.navigation-container {
+  left: 15px;
+  position: absolute;
+  top: 15px;
+  z-index: 10;
+}
+
+/*
+ * Hide navigator in small screens
+ */
+
+@media (max-width: 600px) {
+  .navigation-container {
+   display: none;
+  }
+}

@@ -2,8 +2,11 @@
   <!-- Restaurant's Logo  -->
   <div>
     <div class="item__logo">
-      <a routerLink="/home">
-        <img src="{{ restaurant.imageUrl }}" class="item__logo__img" />
+      <a [routerLink]="deleteLoading ? '/home' : '/restaurants/' + restaurant._id">
+        <img
+          src="{{ restaurant.imageUrl | assetPathResolve: 'image':'restaurant' }}"
+          class="item__logo__img"
+        />
       </a>
     </div>
   </div>
@@ -12,25 +15,33 @@
   <div fxFlex="100" class="item-content">
     <!-- Restaurant's Name -->
     <div class="item__name-container">
-      <a class="item__name-container__name" routerLink="/home">{{ restaurant.name }}</a>
+      <a
+        class="item__name-container__name"
+        [routerLink]="deleteLoading ? '/home' : '/restaurants/' + restaurant._id"
+        >{{ restaurant.name }}</a
+      >
+      <span class="warn" *ngIf="restaurant.pendingReviews">
+        -- Pending Reviews ({{ restaurant.pendingReviews }})</span
+      >
     </div>
 
     <!-- Restaurant's Star Rating and Number of Reviews -->
     <div class="item__rating-container">
       <!-- Number of rating -->
-      <span>{{ restaurant.rating }} </span>
+      <span>{{ restaurant.rating | number: '1.1-1' }} </span>
 
       <!-- Number of star rating -->
-      <span
-        ><app-star-rating
+      <span>
+        <app-star-rating
           [rating]="restaurant.rating"
           [starCount]="5"
           [color]="'accent'"
-        ></app-star-rating
-      ></span>
+          [presentOnly]="true"
+        ></app-star-rating>
+      </span>
 
       <!-- Number of user reviews -->
-      <span> ({{ restaurant.reviewsCount }})</span>
+      <span> ({{ restaurant.reviewsCount || 0 }})</span>
     </div>
 
     <!-- Restaurant's Address -->
@@ -55,13 +66,17 @@
     <!-- Options Menu -->
     <mat-menu #menu="matMenu">
       <!-- Edit -->
-      <button mat-menu-item (click)="onOpenEditDialog()">
+      <a mat-menu-item [routerLink]="'/restaurants/' + restaurant._id + '/edit'">
         <mat-icon>edit</mat-icon>
         <span>Edit</span>
-      </button>
+      </a>
 
       <!-- Delete -->
-      <button mat-menu-item (click)="onOpenDeleteDialog()">
+      <button
+        mat-menu-item
+        (click)="onOpenDeleteDialog(restaurant.name)"
+        [disabled]="deleteLoading"
+      >
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
       </button>

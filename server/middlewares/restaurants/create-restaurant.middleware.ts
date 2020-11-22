@@ -6,12 +6,14 @@ import createError from '../../utils/error.utils';
 const createRestaurant: Handler = async (req, res, next) => {
   try {
     // extract necessary fields
-    const reqUserId = (<UserModel>req.user)._id;
+    const reqUserId = (<UserModel>req.user).id;
 
-    const { name, description, address, imageUrl, status } = req.body;
+    const { name, description, address, status } = req.body;
+
+    const imageUrl: string = req.file?.filename;
 
     // validate inputs
-    if (!description || !address || !imageUrl || (status !== 'open' && status !== 'closed')) {
+    if (!description || !address || (status !== 'open' && status !== 'closed')) {
       throw createError(new Error('Invalid request body'), {
         client: 'Invalid request body',
         statusCode: 404,

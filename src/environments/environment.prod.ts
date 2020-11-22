@@ -2,6 +2,18 @@ export const environment = {
   production: true,
 };
 
+/**
+ * App router main paths
+ */
+export const ROUTER_MAIN_PATHS = {
+  HOME: 'home',
+  login: 'login',
+  signup: 'signup',
+  users: 'users',
+  restaurants: 'restaurants',
+  reviews: 'reviews',
+};
+
 /*
  * API end points
  */

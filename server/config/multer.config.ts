@@ -2,13 +2,13 @@ import * as multer from 'multer';
 import * as path from 'path';
 import * as uniqid from 'uniqid';
 
-const upload = (() => {
+const upload = (inputFileName: string) => {
   const storage = multer.diskStorage({
     destination: (req: any, file: any, cb: any) => {
-      cb(null, path.resolve(__dirname, '../upload/images'));
+      cb(null, path.resolve(__dirname, '../cloud/upload/images'));
     },
     filename: (req, file, callback) => {
-      callback(null, uniqid('', `-${file.originalname.trim()}`));
+      callback(null, uniqid('', path.extname(file.originalname)));
     },
   });
 
@@ -20,7 +20,7 @@ const upload = (() => {
     return cb(null, true);
   };
 
-  return multer({ storage, fileFilter: imageFilter }).single('image');
-})();
+  return multer({ storage, fileFilter: imageFilter }).single(inputFileName);
+};
 
 export default upload;
