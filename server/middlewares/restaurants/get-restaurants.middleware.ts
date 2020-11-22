@@ -17,7 +17,7 @@ const getRestaurants: Handler = async (req, res, next) => {
     // validate inputs
     if (
       (orderAlphabetically && Number(orderAlphabetically) !== 1) ||
-      (status && status !== 'open' && status !== 'closed') ||
+      (status && status !== 'open') ||
       (smallestNumberOfStars &&
         (Number(smallestNumberOfStars) < 1 ||
           Number(smallestNumberOfStars) > 5 ||
@@ -28,6 +28,9 @@ const getRestaurants: Handler = async (req, res, next) => {
         statusCode: 404,
       });
     }
+
+    // consider 0 and 1 stars in a 5-star based rating system to be the same (the absense of rating)
+    const stars = Number(smallestNumberOfStars) === 1 ? 0 : Number(smallestNumberOfStars);
 
     // construct filter
     const filter: any = {};
@@ -77,7 +80,7 @@ const getRestaurants: Handler = async (req, res, next) => {
                 _id: 0,
                 restaurant: 1,
                 rating: 1,
-                pending: { $cond: [{ $ifNull: ['$reply', true] }, 1, 0] },
+                pending: { $cond: [{ $ifNull: ['$reply', false] }, 0, 1] },
               },
             },
 
@@ -87,7 +90,7 @@ const getRestaurants: Handler = async (req, res, next) => {
                 _id: '$restaurant',
                 count: { $sum: 1 },
                 averageRating: { $avg: '$rating' },
-                pendingReviews: { $sum: '$pending' },
+                awaitingResponse: { $sum: '$pending' },
               },
             },
           ],
@@ -115,16 +118,16 @@ const getRestaurants: Handler = async (req, res, next) => {
           createdAt: 1,
           rating: '$reviews.averageRating',
           reviewsCount: '$reviews.count',
-          pendingReviews:
-            userType === 'owner' || userType === 'admin' ? '$reviews.pendingReviews' : 0,
+          awaitingResponse:
+            userType === 'owner' || userType === 'admin' ? '$reviews.awaitingResponse' : undefined,
         },
       },
 
       // return restaurants with smalles number of stars requested (Default: all)
       {
-        $match: smallestNumberOfStars
+        $match: stars
           ? {
-              rating: { $gt: Number(smallestNumberOfStars) },
+              rating: { $gte: stars },
             }
           : {},
       },

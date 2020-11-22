@@ -10,7 +10,7 @@ export default interface IRestaurantItem {
   imageUrl: string;
   rating: number;
   reviewsCount: number;
-  pendingReviews?: number;
+  awaitingResponse?: number;
   address: string;
   status: 'open' | 'closed';
 }

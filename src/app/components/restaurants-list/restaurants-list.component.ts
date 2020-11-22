@@ -18,7 +18,7 @@ export class RestaurantsListComponent implements OnInit, OnDestroy {
    * it's mainly used to clean up subscriptions after the component is destroyed
    * @private
    * @type {Subscription[]}
-   * @memberof SignupFormComponent
+   * @memberof RestaurantsListComponent
    */
   private readonly _subscriptions$!: Subscription[];
 
@@ -52,6 +52,9 @@ export class RestaurantsListComponent implements OnInit, OnDestroy {
     this.restaurants = [];
 
     this.isLoadingResults = true;
+
+    // initialize
+    this.user$ = this._authServ.user$;
   }
 
   public ngOnInit(): void {
@@ -99,13 +102,6 @@ export class RestaurantsListComponent implements OnInit, OnDestroy {
           this.restaurants = restaurants;
         })
     );
-
-    // listen to login events to reflect status in the ui
-    this._subscriptions$.push(
-      this._authServ.isLoggedIn$.subscribe(() => {
-        this.user$ = this._authServ.user$;
-      })
-    );
   }
 
   public onDeleteRestaurant(): void {
@@ -115,7 +111,7 @@ export class RestaurantsListComponent implements OnInit, OnDestroy {
 
   /**
    * Clean up subscriptions when component is destroyed
-   * @memberof SignupFormComponent
+   * @memberof RestaurantsListComponent
    */
   public ngOnDestroy(): void {
     this._subscriptions$.forEach((sub) => {

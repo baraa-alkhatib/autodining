@@ -6,3 +6,12 @@
 .dialog-no-padding .mat-dialog-container {
   padding: 0 !important;
 }
+
+/*
+ * Sets min height for mat-bottomsheet
+ * refer to https://stackoverflow.com/questions/45928423/get-rid-of-white-space-around-angular-material-modal-dialog
+ */
+
+.bottomsheet-min-height {
+  min-height: 250px !important;
+}

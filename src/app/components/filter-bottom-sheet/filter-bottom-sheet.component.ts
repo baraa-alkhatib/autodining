@@ -16,6 +16,6 @@ export class FilterBottomSheetComponent {
    * @memberof FilterBottomSheetComponent
    */
   public open(): void {
-    this._bottomSheet.open(FilterComponent);
+    this._bottomSheet.open(FilterComponent, { panelClass: 'bottomsheet-min-height' });
   }
 }

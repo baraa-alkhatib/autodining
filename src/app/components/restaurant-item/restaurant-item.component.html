@@ -20,9 +20,9 @@
         [routerLink]="deleteLoading ? '/home' : '/restaurants/' + restaurant._id"
         >{{ restaurant.name }}</a
       >
-      <span class="warn" *ngIf="restaurant.pendingReviews">
-        -- Pending Reviews ({{ restaurant.pendingReviews }})</span
-      >
+      <span class="warn" *ngIf="restaurant.awaitingResponse">
+        -- Awaiting response ({{ restaurant.awaitingResponse }})
+      </span>
     </div>
 
     <!-- Restaurant's Star Rating and Number of Reviews -->
@@ -33,7 +33,7 @@
       <!-- Number of star rating -->
       <span>
         <app-star-rating
-          [rating]="restaurant.rating"
+          [rating]="restaurant.rating || 1"
           [starCount]="5"
           [color]="'accent'"
           [presentOnly]="true"
@@ -41,7 +41,9 @@
       </span>
 
       <!-- Number of user reviews -->
-      <span> ({{ restaurant.reviewsCount || 0 }})</span>
+      <span class="item__rating-container__reviews">
+        - {{ restaurant.reviewsCount || 0 }} reviews</span
+      >
     </div>
 
     <!-- Restaurant's Address -->

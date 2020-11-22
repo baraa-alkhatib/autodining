@@ -39,11 +39,11 @@ const getReviews: Handler = async (req, res, next) => {
     }
 
     let reviews: ReviewModel[] | null = null;
-    let pendingReviewsCount: number | null = null;
+    let awaitingResponseCount: number | null = null;
 
-    // attach number of pending reviews if the request made by an owner
+    // attach number of reviews which have not received a reply yet if the request made by an owner
     if (userType === 'owner' && Number(pendingCount) === 1) {
-      pendingReviewsCount = await Review.countDocuments(<ReviewModel>{
+      awaitingResponseCount = await Review.countDocuments(<ReviewModel>{
         user: reqUserId,
         restaurant: restaurantId,
         reply: <any>{ $exists: true },
@@ -58,7 +58,7 @@ const getReviews: Handler = async (req, res, next) => {
 
     res.locals.reviews = reviews;
 
-    res.locals.pendingReviewsCount = pendingReviewsCount;
+    res.locals.awaitingResponseCount = awaitingResponseCount;
 
     return next();
   } catch (error) {

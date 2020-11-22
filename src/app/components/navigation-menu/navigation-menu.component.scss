@@ -7,6 +7,27 @@
  */
 
 .route-active {
-  background-color: rgba(#b31a22, 0.1);
+  // background-color: rgba(#b31a22, 0.1);
   border-left: 5px solid #b31a22;
+}
+
+.settings,
+.logout {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
+  .settings,
+  .logout {
+    display: block !important;
+  }
+
+  .logout {
+    border-top-color: rgba(0, 0, 0, 0.1);
+    border-top-style: solid;
+    border-top-width: 1px;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+  }
 }

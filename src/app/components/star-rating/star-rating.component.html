@@ -9,7 +9,7 @@
   matTooltipPosition="above"
   [class.present-only]="presentOnly"
   class="star"
-  [style.color]="rating === 0 || isDisabled ? 'inherit' : null"
+  [style.color]="(rating === 1 && !presentOnly) || isDisabled ? 'inherit' : null"
 >
   <mat-icon>
     {{ showStarIcon(i) }}

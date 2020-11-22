@@ -20,20 +20,12 @@ const routes: Routes = [
   {
     path: 'users',
     loadChildren: () => import('./modules/users/users.module').then((m) => m.UsersModule),
-    canLoad: [OnlyLoggedInGuard],
     canActivate: [OnlyLoggedInGuard],
   },
   {
     path: 'restaurants',
     loadChildren: () =>
       import('./modules/restaurants/restaurants.module').then((m) => m.RestaurantsModule),
-    canLoad: [OnlyLoggedInGuard],
-    canActivate: [OnlyLoggedInGuard],
-  },
-  {
-    path: 'reviews',
-    loadChildren: () => import('./modules/reviews/reviews.module').then((m) => m.ReviewsModule),
-    canLoad: [OnlyLoggedInGuard],
     canActivate: [OnlyLoggedInGuard],
   },
   {

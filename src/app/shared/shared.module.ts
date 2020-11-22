@@ -18,7 +18,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { DeleteFormComponent } from '../components/delete-form/delete-form.component';
-import { EditRestaurantFormComponent } from '../components/edit-restaurant-form/edit-restaurant-form.component';
 import { FileUploadComponent } from '../components/file-upload/file-upload.component';
 import { FilterBottomSheetComponent } from '../components/filter-bottom-sheet/filter-bottom-sheet.component';
 import { FilterComponent } from '../components/filter/filter.component';
@@ -33,6 +32,8 @@ import { StarRatingComponent } from '../components/star-rating/star-rating.compo
 import { AssetPathResolvePipe } from '../pipes/asset-path-resolve.pipe';
 import { AngularFlexLayoutModule } from './angular-flex-layout/angular-flex-layout.module';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { ReviewItemComponent } from '../components/review-item/review-item.component';
+import { ReviewFormComponent } from '../components/review-form/review-form.component';
 
 @NgModule({
   declarations: [
@@ -45,13 +46,14 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
     RestaurantItemComponent,
     RestaurantsListComponent,
     StarRatingComponent,
-    EditRestaurantFormComponent,
     DeleteFormComponent,
     LogoutFormComponent,
     FileUploadComponent,
     NavigatorComponent,
+    ReviewItemComponent,
     // pipes
     AssetPathResolvePipe,
+    ReviewFormComponent,
   ],
   imports: [
     CommonModule,
@@ -107,14 +109,15 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
     RestaurantItemComponent,
     RestaurantsListComponent,
     StarRatingComponent,
-    EditRestaurantFormComponent,
     SignupFormComponent,
     DeleteFormComponent,
     LogoutFormComponent,
     FileUploadComponent,
     NavigatorComponent,
+    ReviewItemComponent,
     // expotr pipes
     AssetPathResolvePipe,
+    ReviewFormComponent,
   ],
 })
 export class SharedModule {}

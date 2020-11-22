@@ -14,7 +14,7 @@ const router = express.Router({ mergeParams: true });
 router.get('/', getReviews, (req, res) => {
   res
     .status(200)
-    .json({ reviews: res.locals.reviews, pendingReviewsCount: res.locals.pendingReviewsCount });
+    .json({ reviews: res.locals.reviews, awaitingResponseCount: res.locals.awaitingResponseCount });
 });
 
 // get review
@@ -24,12 +24,12 @@ router.get('/:id', disallowUserOwner, disallowUserRegular, getReview, (req, res)
 
 // create review
 router.post('/', disallowUserAdmin, disallowUserOwner, createReview, (req, res) => {
-  res.status(200).end({ review: res.locals.review });
+  res.status(200).json({ review: res.locals.review });
 });
 
 // update review/reply
-router.put('/:id', disallowUserOwner, disallowUserRegular, updateReview, (req, res) => {
-  res.status(200).end({ review: res.locals.review });
+router.put('/:id', disallowUserRegular, updateReview, (req, res) => {
+  res.status(200).json({ review: res.locals.review });
 });
 
 // delete review/reply

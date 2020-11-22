@@ -1,0 +1,89 @@
+<div fxLayout="column">
+  <div
+    fxFlex.gt-sm="80"
+    fxLayout="row"
+    fxFlexAlign="end end"
+    class="item"
+    [ngClass]="{ reply: isReply }"
+  >
+    <!-- Review's Logo  -->
+    <div>
+      <div class="item__logo">
+        <img
+          src="{{ review.user.imageUrl | assetPathResolve: 'image':'user' }}"
+          class="item__logo__img"
+        />
+      </div>
+    </div>
+
+    <!-- (Review/Reply)'s Information  -->
+    <div fxFlex="100" class="item-content">
+      <!-- User Name -->
+      <div class="item__name-container">
+        <a class="item__name-container__name">{{ isReply ? owner!.name : review.user.name }}</a>
+      </div>
+      <div class="mat-small">{{ review.createdAt | date }}</div>
+
+      <!-- Reviewer's Star Rating -->
+      <div class="item__rating-container" *ngIf="!isReply">
+        <!-- Number of rating -->
+        <span>{{ review.rating | number: '1.1-1' }} </span>
+        <!-- Number of star rating -->
+        <span>
+          <app-star-rating
+            [rating]="review.rating || 1"
+            [starCount]="5"
+            [color]="'accent'"
+            [presentOnly]="true"
+          ></app-star-rating>
+        </span>
+      </div>
+
+      <!-- (Review/Reply)'s body -->
+      <div class="item__comment-container" *ngIf="!isReply">{{ review.comment }}</div>
+      <div class="item__comment-container" *ngIf="isReply">{{ review.reply }}</div>
+
+      <!-- Reply Button -->
+      <div
+        *ngIf="!showOnlyComment && (user$ | async)?.type === 'owner' && !isReply && !review.reply"
+      >
+        <button mat-button color="warn" (click)="onOpenEditDialog(true, 'create')">Reply</button>
+      </div>
+
+      <!-- Divider at the bottom of review's item element -->
+    </div>
+
+    <!-- (Review/Reply)'s Edit/Delete Options  -->
+    <ng-container *ngIf="(user$ | async)?.type == 'admin'">
+      <div>
+        <!-- Options Menu Icon -->
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <!-- Options Menu -->
+        <mat-menu #menu="matMenu">
+          <!-- Edit -->
+          <button
+            mat-menu-item
+            (click)="onOpenEditDialog(isReply, 'edit')"
+            [disabled]="deleteLoading"
+          >
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+
+          <!-- Delete -->
+          <button mat-menu-item (click)="onOpenDeleteDialog()" [disabled]="deleteLoading">
+            <mat-icon>remove</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </ng-container>
+  </div>
+</div>

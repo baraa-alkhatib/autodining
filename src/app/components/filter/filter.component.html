@@ -10,10 +10,10 @@
       <mat-icon class="small-icon">fiber_manual_record</mat-icon>
       <div>open</div>
     </div>
-    <mat-checkbox fixFill [(ngModel)]="isOpen"></mat-checkbox>
+    <mat-checkbox fixFill [(ngModel)]="isOpen" (click)="(false)"></mat-checkbox>
   </div>
   <div fxlayout="row" fxLayoutAlign="space-between center" class="container__item">
-    <div (click)="onRatingUpdated(0)">Rating</div>
+    <div>Rating</div>
     <app-star-rating
       [rating]="stars"
       [starCount]="5"

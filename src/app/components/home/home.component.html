@@ -4,7 +4,7 @@
   <h2 class="nav-menu__title mat-title">Go to</h2>
 
   <!-- Add a navigation menu -->
-  <app-navigation-menu></app-navigation-menu>
+  <app-navigation-menu *ngIf="isLoggedIn"></app-navigation-menu>
 
   <!-- Title for filter section  -->
   <h2 class="nav-menu__title mat-title" fxLayoutAlign="space-between start">
@@ -16,6 +16,7 @@
       [matTooltip]="'Clear filter'"
       matTooltipPosition="below"
       color="primary"
+      (click)="onClearFilter()"
     >
       <!-- Add clear settings icon to the button -->
       <mat-icon>block_flipped</mat-icon>

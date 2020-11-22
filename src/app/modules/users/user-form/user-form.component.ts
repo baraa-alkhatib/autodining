@@ -21,7 +21,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
    * it's mainly used to clean up subscriptions after the component is destroyed
    * @private
    * @type {Subscription[]}
-   * @memberof SignupFormComponent
+   * @memberof UserFormComponent
    */
   private readonly _subscriptions$: Subscription[];
 
@@ -234,7 +234,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   /**
    * Clean up subscriptions when component is destroyed
-   * @memberof SignupFormComponent
+   * @memberof UserFormComponent
    */
   public ngOnDestroy(): void {
     this._subscriptions$.forEach((sub) => {

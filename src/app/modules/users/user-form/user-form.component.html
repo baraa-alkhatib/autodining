@@ -1,21 +1,23 @@
-<mat-card class="user-card">
-  <app-navigator
-    [link]="(editor$ | async)?._id === user._id ? '/home' : '/users'"
-    [title]="(editor$ | async)?._id === user._id ? 'Home page' : 'Users page'"
-    [icon]="(editor$ | async)?._id === user._id ? 'home' : 'supervisor_account'"
-  ></app-navigator>
+<mat-card class="card">
+  <ng-container *ngIf="editor$ | async as editor">
+    <app-navigator
+      [link]="editor._id === user._id ? '/home' : '/users'"
+      [title]="editor._id === user._id ? 'Home page' : 'Users page'"
+      [icon]="editor._id === user._id ? 'home' : 'supervisor_account'"
+    ></app-navigator>
+  </ng-container>
 
   <mat-card-header flxLayout="row" fxLayoutAlign="center">
-    <mat-card-title class="user-card__title"> Profile Settings </mat-card-title>
+    <mat-card-title class="card__title"> Profile Settings </mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
-    <form fxLayout="column" [formGroup]="form" (ngSubmit)="onUpdate()" class="user-card__form">
+    <form fxLayout="column" [formGroup]="form" (ngSubmit)="onUpdate()" class="card__form">
       <div fxLayout="row" fxLayoutAlign="center center">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
           <img
             [src]="image.fileName | assetPathResolve: image.fileType:'user'"
-            class="user-card__photo"
+            class="card__image"
           />
           <app-file-upload
             formControlName="image"
@@ -25,7 +27,7 @@
         </div>
       </div>
 
-      <mat-form-field class="user-card__name">
+      <mat-form-field class="card__name card__item">
         <input matInput type="text" placeholder="Name" formControlName="name" />
 
         <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
@@ -41,7 +43,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="user-card__email">
+      <mat-form-field class="card__email card__item">
         <input matInput type="email" placeholder="Email" formControlName="email" />
 
         <mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
@@ -51,7 +53,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="user-card__password">
+      <mat-form-field class="card__password card__item">
         <input
           matInput
           type="password"
@@ -78,14 +80,14 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="user-card__extra">
+      <div class="card__extra">
         <div fxLayout="row" fxLayoutAlign="center">
           <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
         </div>
       </div>
 
       <div fxLayout="column" fxLayoutGap="15px">
-        <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid">
+        <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid || !form.dirty">
           Update
         </button>
 

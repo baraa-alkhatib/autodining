@@ -12,7 +12,6 @@ import { Subscription } from 'rxjs';
 import IRestaurantItem from '../../models/restaurant-item.model';
 import { RestaurantService } from '../../services/restaurant.service';
 import { DeleteFormComponent } from '../delete-form/delete-form.component';
-import { EditRestaurantFormComponent } from '../edit-restaurant-form/edit-restaurant-form.component';
 
 @Component({
   selector: 'app-restaurant-item',
@@ -21,17 +20,6 @@ import { EditRestaurantFormComponent } from '../edit-restaurant-form/edit-restau
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RestaurantItemComponent implements OnDestroy {
-  /**
-   * An array of all subscription instances on this component;
-   * it's mainly used to clean up subscriptions after the component is destroyed
-   * @private
-   * @type {Subscription[]}
-   * @memberof SignupFormComponent
-   */
-  private readonly _subscriptions$!: Subscription[];
-
-  public deleteLoading!: boolean;
-
   /**
    * Holds the non-detailed view data of a restaurnt
    * @type {IRestaurantItem}
@@ -48,6 +36,17 @@ export class RestaurantItemComponent implements OnDestroy {
 
   @Output() public restaurantDeleted!: EventEmitter<IRestaurantItem>;
 
+  /**
+   * An array of all subscription instances on this component;
+   * it's mainly used to clean up subscriptions after the component is destroyed
+   * @private
+   * @type {Subscription[]}
+   * @memberof RestaurantItemComponent
+   */
+  private readonly _subscriptions$!: Subscription[];
+
+  public deleteLoading!: boolean;
+
   constructor(
     private _restaurantServ: RestaurantService,
     private _dialog: MatDialog,
@@ -58,14 +57,6 @@ export class RestaurantItemComponent implements OnDestroy {
 
     // initialize event emetters
     this.restaurantDeleted = new EventEmitter();
-  }
-
-  /**
-   * Opens restaurant edit form a popup window
-   * @memberof RestaurantItemComponent
-   */
-  public onOpenEditDialog(): void {
-    this._dialog.open(EditRestaurantFormComponent);
   }
 
   /**
@@ -108,7 +99,7 @@ export class RestaurantItemComponent implements OnDestroy {
 
   /**
    * Clean up subscriptions when component is destroyed
-   * @memberof SignupFormComponent
+   * @memberof RestaurantItemComponent
    */
   public ngOnDestroy(): void {
     this._subscriptions$.forEach((sub) => {

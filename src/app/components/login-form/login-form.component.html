@@ -1,9 +1,9 @@
-<mat-card class="login-card">
-  <mat-card-title class="login-card__title"> Log In </mat-card-title>
+<mat-card class="card">
+  <mat-card-title class="card__title"> Log In </mat-card-title>
 
   <mat-card-content>
-    <form fxLayout="column" [formGroup]="form" (ngSubmit)="onLogin()" class="login-card__form">
-      <mat-form-field class="login-card__email">
+    <form fxLayout="column" [formGroup]="form" (ngSubmit)="onLogin()" class="card__form">
+      <mat-form-field class="card__email">
         <input
           matInput
           type="email"
@@ -24,7 +24,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="login-card__password">
+      <mat-form-field class="card__password">
         <input
           matInput
           [type]="hidePassword ? 'password' : 'text'"
@@ -52,7 +52,7 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="login-card__extra">
+      <div class="card__extra">
         <div fxLayout="row" fxLayoutAlign="center">
           <mat-error *ngIf="errorMessage">
             {{ errorMessage }}
@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid">
+      <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid || !form.dirty">
         Login
       </button>
     </form>

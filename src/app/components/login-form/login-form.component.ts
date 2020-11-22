@@ -18,7 +18,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
    * it's mainly used to clean up subscriptions after the component is destroyed
    * @private
    * @type {Subscription[]}
-   * @memberof SignupFormComponent
+   * @memberof LoginFormComponent
    */
   private readonly _subscriptions$: Subscription[];
 
@@ -138,7 +138,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
   /**
    * Clean up subscriptions when component is destroyed
-   * @memberof SignupFormComponent
+   * @memberof LoginFormComponent
    */
   public ngOnDestroy(): void {
     this._subscriptions$.forEach((sub) => {

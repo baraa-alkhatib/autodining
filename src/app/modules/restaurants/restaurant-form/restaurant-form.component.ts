@@ -21,7 +21,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
    * it's mainly used to clean up subscriptions after the component is destroyed
    * @private
    * @type {Subscription[]}
-   * @memberof SignupFormComponent
+   * @memberof RestaurantFormComponent
    */
   private readonly _subscriptions$: Subscription[];
 
@@ -75,7 +75,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
     // get restaurant data from activated route
     this._subscriptions$.push(
       this._acitvatedRoute.data.subscribe((data: Partial<{ restaurant: IRestaurant }>) => {
-        if (this.restaurant) {
+        if (data?.restaurant) {
           this.mode = 'edit';
 
           this.restaurant = <IRestaurant>data.restaurant;
@@ -84,6 +84,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
             name: this.restaurant.name,
             email: this.restaurant.description,
             address: this.restaurant.address,
+            description: this.restaurant.description,
             status: this.restaurant.status,
           });
 
@@ -253,7 +254,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
 
   /**
    * Clean up subscriptions when component is destroyed
-   * @memberof SignupFormComponent
+   * @memberof RestaurantFormComponent
    */
   public ngOnDestroy(): void {
     this._subscriptions$.forEach((sub) => {

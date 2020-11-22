@@ -19,6 +19,7 @@ const reviewSchema = new mongoose.Schema(
     visitedAt: {
       type: Date,
       required: true,
+      default: new Date(),
     },
   },
   { timestamps: true }

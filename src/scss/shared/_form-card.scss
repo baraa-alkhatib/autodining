@@ -1,0 +1,45 @@
+/**
+ * This class is shared among many forms but is not GLOBAL
+ */
+
+.card__title,
+.card__subtitle {
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.2rem;
+}
+
+.card__subtitle {
+  text-transform: capitalize;
+}
+
+.card__subtitle--margin-top {
+  margin-top: 10px !important;
+}
+
+.card__subtitle--text-bg {
+  font-size: 1.2rem;
+}
+
+.card__subtitle--text-primary {
+  color: #b31a22;
+}
+
+.card__image {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: block;
+  width: 100px;
+  height: 100px;
+}
+
+.card__form {
+  font-size: 1.2rem;
+}
+
+.card__item:not(:last-child) {
+  margin-bottom: 30px;
+}
+
+.card__extra {
+  padding: 30px 0;
+}

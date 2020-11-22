@@ -1,0 +1,51 @@
+.card {
+  max-width: 80%;
+  margin: 10px auto;
+}
+
+.header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.card__comments-container {
+  margin-top: 10px;
+}
+
+.card__image {
+  box-shadow: 0 0 5px black;
+  display: block;
+  margin: 0 auto;
+  width: 50%;
+}
+
+.card__description {
+  font-family: sans-serif;
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.item__rating-container {
+margin-bottom: 20px;
+}
+
+.item__rating-container__reviews {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.card__comments-headline {
+  margin-top: 10px;
+}
+
+mat-card-content {
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  .card {
+    margin: 0 auto;
+    max-width: 100%;
+  }
+}

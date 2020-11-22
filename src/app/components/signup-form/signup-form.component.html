@@ -1,23 +1,19 @@
-<mat-card class="signup-card">
+<mat-card class="card">
   <mat-card-header flxLayout="row" fxLayoutAlign="center">
-    <mat-card-title class="signup-card__title"> Signup </mat-card-title>
+    <mat-card-title class="card__title"> Signup </mat-card-title>
 
-    <mat-card-subtitle class="signup-card__subtitle signup-card__subtitle--margin-top"
-      >As</mat-card-subtitle
-    >
+    <mat-card-subtitle class="card__subtitle card__subtitle--margin-top">As</mat-card-subtitle>
 
-    <mat-card-subtitle
-      class="signup-card__subtitle signup-card__subtitle--text-bg signup-card__subtitle--text-primary"
-    >
+    <mat-card-subtitle class="card__subtitle card__subtitle--text-bg card__subtitle--text-primary">
       ({{ userType === 'regular' ? 'Regular User' : 'Business Owner' }})
     </mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
-    <form fxLayout="column" [formGroup]="form" (ngSubmit)="onSignup()" class="signup-card__form">
+    <form fxLayout="column" [formGroup]="form" (ngSubmit)="onSignup()" class="card__form">
       <input type="hidden" name="type" [(ngModel)]="userType" formControlName="type" required />
 
-      <mat-form-field class="signup-card__email">
+      <mat-form-field class="card__name card__item">
         <input matInput type="text" placeholder="Name" formControlName="name" required />
 
         <mat-error *ngIf="name?.invalid && (name?.dirty || name?.touched)">
@@ -37,7 +33,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="signup-card__email">
+      <mat-form-field class="card__email card__item">
         <input matInput type="email" placeholder="Email" formControlName="email" required />
 
         <mat-error *ngIf="email?.invalid && (email?.dirty || email?.touched)">
@@ -51,8 +47,8 @@
         </mat-error>
       </mat-form-field>
 
-      <div fxLayout="column" formGroupName="password">
-        <mat-form-field class="signup-card__password">
+      <div fxLayout="column" formGroupName="password" class="card__pasword">
+        <mat-form-field class="card__item">
           <input
             matInput
             type="password"
@@ -80,7 +76,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field class="signup-card__password">
+        <mat-form-field calss="card__item">
           <input
             matInput
             type="password"
@@ -100,7 +96,7 @@
         </mat-form-field>
       </div>
 
-      <div class="signup-card__extra">
+      <div class="card__extra">
         <div fxLayout="row" fxLayoutAlign="center">
           <mat-error *ngIf="errorMessage">
             {{ errorMessage }}
@@ -132,9 +128,12 @@
         </div>
       </div>
 
-      <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid">
+      <button mat-raised-button color="primary" [disabled]="showSpinner || form.invalid || !form.dirty">
         Signup
       </button>
+      <a mat-flat-button routerLink="/login" color="accent" class="card__login">
+        Login with your account
+      </a>
     </form>
 
     <br />

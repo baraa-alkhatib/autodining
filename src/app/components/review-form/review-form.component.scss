@@ -1,13 +1,9 @@
 @import '~src/scss/shared/form-card';
 
 .card {
-  max-width: 80%;
-  margin: 10px auto;
+  max-width: 100%;
 }
 
-.card__image {
-  border-radius: 50%;
-}
 
 @media (max-width: 600px) {
   .card {

@@ -2,3 +2,9 @@
   padding: 10px;
   padding-top: 70px;
 }
+
+@media (max-width: 600px) {
+  .container {
+    padding-top: 0;
+  }
+}

@@ -19,14 +19,14 @@ export class RestaurantService {
    * @type {(BehaviorSubject<{
    *     orderAlphabetically?: 1;
    *     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
-   *     status?: 'open' | 'closed';
+   *     status?: 'open';
    *   }>)}
    * @memberof RestaurantService
    */
   private readonly _restaurantsFilter$!: BehaviorSubject<{
     orderAlphabetically?: 1;
     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
-    status?: 'open' | 'closed';
+    status?: 'open' | undefined;
   }>;
 
   /**
@@ -36,14 +36,14 @@ export class RestaurantService {
    * @type {(Observable<{
    *     orderAlphabetically?: 1;
    *     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
-   *     status?: 'open' | 'closed';
+   *     status?: 'open';
    *   }>)}
    * @memberof RestaurantService
    */
   public get restaurantsFilter$(): Observable<{
     orderAlphabetically?: 1;
     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
-    status?: 'open' | 'closed';
+    status?: 'open';
   }> {
     return this._restaurantsFilter$.asObservable();
   }
@@ -54,21 +54,25 @@ export class RestaurantService {
    * @type {({
    *     orderAlphabetically?: 1;
    *     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
-   *     status?: 'open' | 'closed';
+   *     status?: 'open';
    *   })}
    * @memberof RestaurantService
    */
   public get restaurantsFilter(): {
     orderAlphabetically?: 1;
     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
-    status?: 'open' | 'closed';
+    status?: 'open';
   } {
     return this._restaurantsFilter$.value;
   }
 
   constructor(private _http: HttpClient) {
     // assign a new BehaviorSubject
-    this._restaurantsFilter$ = new BehaviorSubject(<any>(<unknown>{}));
+    this._restaurantsFilter$ = new BehaviorSubject(<any>{
+      orderAlphabetically: undefined,
+      smallestNumberOfStars: 1,
+      status: undefined,
+    });
   }
 
   /**
@@ -76,14 +80,14 @@ export class RestaurantService {
    * @param {({
    *     orderAlphabetically?: 1;
    *     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
-   *     status?: 'open' | 'closed';
+   *     status?: 'open';
    *   })} filter
    * @memberof RestaurantService
    */
   public dispatchRestaurantsFilter(filter: {
     orderAlphabetically?: 1;
     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
-    status?: 'open' | 'closed';
+    status?: 'open';
   }) {
     this._restaurantsFilter$.next(filter);
   }
@@ -97,7 +101,7 @@ export class RestaurantService {
   public getRestaurants(filter: {
     orderAlphabetically?: 1;
     smallestNumberOfStars?: 0 | 1 | 2 | 3 | 4 | 5;
-    status?: 'open' | 'closed';
+    status?: 'open';
   }): Observable<{ restaurants: IRestaurantItem[] }> {
     const url = API.getRestaurants;
 

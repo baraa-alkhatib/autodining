@@ -1,36 +1,12 @@
-.signup-card__title,
-.signup-card__subtitle {
-  font-weight: bold;
-  text-align: center;
-  line-height: 1.2rem;
+@import '~src/scss/shared/form-card';
+
+.card__login {
+  margin-top: 10px;
+  display: none;
 }
 
-.signup-card__subtitle {
-  text-transform: capitalize;
+@media (max-width: 600px) {
+  .card__login {
+    display: block;
+  }
 }
-
-.signup-card__subtitle--margin-top {
-  margin-top: 10px !important;
-}
-
-.signup-card__subtitle--text-bg {
-  font-size: 1.2rem;
-}
-
-.signup-card__subtitle--text-primary {
-  color: #b31a22;
-}
-
-.signup-card__form {
-  font-size: 1.2rem;
-}
-
-.signup-card__email,
-.signup-card__password:not(:last-child) {
-  margin-bottom: 30px;
-}
-
-.signup-card__extra {
-  padding: 30px 0;
-}
-

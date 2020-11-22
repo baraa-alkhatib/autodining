@@ -9,7 +9,7 @@ const deleteReview: Handler = async (req, res, next) => {
 
     if (Number(deleteReply) === 1) {
       // remove only reply
-      await Review.updateOne({ _id: reviewId }, { $unset: { reply: 1 } }, { multi: true });
+      await Review.updateOne({ _id: reviewId }, { $unset: { reply: 1 } });
     } else {
       // delete review
       await Review.deleteOne({

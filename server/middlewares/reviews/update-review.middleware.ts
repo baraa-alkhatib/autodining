@@ -7,7 +7,7 @@ const updateReview: Handler = async (req, res, next) => {
 
     const { comment, visitedAt, rating, reply }: Partial<ReviewModel> = req.body;
 
-    // TODO: validate inputs
+    // TODO: validate inputs (Restaurant owners must not be able to edit this)
 
     // construct update
     const update: any = {};
@@ -21,11 +21,11 @@ const updateReview: Handler = async (req, res, next) => {
     }
 
     if (rating) {
-      update.address = rating;
+      update.rating = rating;
     }
 
     if (reply) {
-      update.imageUrl = reply;
+      update.reply = reply;
     }
 
     // find and update review record

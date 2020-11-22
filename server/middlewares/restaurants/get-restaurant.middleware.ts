@@ -1,7 +1,8 @@
 import { Handler } from 'express';
+import * as mongoose from 'mongoose';
 import Restaurant from '../../db/models/restaurant.mongodb.model';
 import Review from '../../db/models/review.mongodb.model';
-import { UserModel } from '../../db/models/user.mongodb.model';
+import User, { UserModel } from '../../db/models/user.mongodb.model';
 
 const getRestaurant: Handler = async (req, res, next) => {
   try {
@@ -14,12 +15,12 @@ const getRestaurant: Handler = async (req, res, next) => {
 
     // construct filter
     const filter: any = {
-      _id: restaurantId,
+      _id: mongoose.Types.ObjectId(restaurantId),
     };
 
     if (userType === 'owner') {
       // TODO: alternatively validate request to make sure owners do not makes requests on others' restaurants
-      filter.user = reqUserId;
+      filter.user = mongoose.Types.ObjectId(reqUserId);
     }
 
     const restaurants = await Restaurant.aggregate([
@@ -28,28 +29,49 @@ const getRestaurant: Handler = async (req, res, next) => {
       // get average rating
       {
         $lookup: {
-          // rating is stored in reviews
+          // rating is stored in reviews collection
           from: Review.collection.name,
-          let: { review: '$_id' },
+
+          let: { restaurant: '$_id' },
+
           pipeline: [
-            // match reviews with same restaurant id
+            // match reviews connected to the same restaurant id
             {
               $match: {
-                $expr: { $eq: ['$_id', '$$review'] },
+                $expr: { $eq: ['$restaurant', '$$restaurant'] },
               },
             },
-            // group reviews and get average rating
+
+            {
+              $project: {
+                _id: 0,
+                restaurant: 1,
+                rating: 1,
+                pending: { $cond: [{ $ifNull: ['$reply', true] }, 1, 0] },
+              },
+            },
+
+            // group reviews and get average rating and count
             {
               $group: {
-                _id: '$_id',
+                _id: '$restaurant',
+                count: { $sum: 1 },
                 averageRating: { $avg: '$rating' },
+                awaitingResponse: { $sum: '$pending' },
               },
             },
           ],
+
           // return reviews array
           as: 'reviews',
         },
       },
+
+      // unwind reviews array in order to sort by rating if requested
+      {
+        $unwind: { path: '$reviews', preserveNullAndEmptyArrays: true },
+      },
+
       // return the necessary fields
       {
         $project: {
@@ -61,13 +83,44 @@ const getRestaurant: Handler = async (req, res, next) => {
           imageUrl: 1,
           status: 1,
           createdAt: 1,
-          reviews: 1,
+          rating: '$reviews.averageRating',
+          reviewsCount: '$reviews.count',
+          awaitingResponse:
+            userType === 'owner' || userType === 'admin' ? '$reviews.awaitingResponse' : undefined,
         },
       },
     ]);
 
     // retrieve the first and only restaurant in the resulting array
-    const [restaurant] = [restaurants];
+    const [restaurant] = [...restaurants];
+
+    // get newest max and min reviews
+
+    const maxReview = await Review.findOne({
+      restaurant: restaurant._id,
+    }).sort({ rating: -1, createdAt: -1 });
+
+    const minReview = await Review.findOne({
+      restaurant: restaurant._id,
+
+      // make sure min is not equal to max
+      _id: { $ne: maxReview?._id },
+    }).sort({ rating: 1, createdAt: -1 });
+
+    // extract restaurant's owner info
+    const owner = await User.findById(restaurant.user);
+
+    // atach values to the resulting object
+
+    restaurant.maxReview = maxReview;
+
+    restaurant.minReview = minReview;
+
+    restaurant.user = {
+      _id: owner?.id,
+      name: (<UserModel>owner)?.name,
+      imageUrl: (<UserModel>owner)?.imageUrl,
+    };
 
     res.locals.restaurant = restaurant;
 

@@ -10,10 +10,10 @@ const createReview: Handler = async (req, res, next) => {
 
     const { restaurantId } = req.query;
 
-    const { comment, visitedAt, rating }: Partial<ReviewModel> = req.body;
+    const { comment, rating }: Partial<ReviewModel> = req.body;
 
     // validate inputs
-    if (!visitedAt || !rating || (Number(rating) < 1 && Number(rating) > 5)) {
+    if (!rating || (Number(rating) < 1 && Number(rating) > 5)) {
       throw createError(new Error('Invalid request body'), {
         client: 'Invalid request body',
         statusCode: 404,
@@ -25,7 +25,6 @@ const createReview: Handler = async (req, res, next) => {
       user: reqUserId,
       restaurant: restaurantId,
       comment,
-      visitedAt: new Date(visitedAt),
       rating,
     });
 

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import IRestaurant from './restaurant.model';
 import { IUser } from './user.model';
 
@@ -14,4 +15,5 @@ export default interface IReview {
   comment: string;
   reply: string;
   visitedAt: Date;
+  createdAt?: Date;
 }

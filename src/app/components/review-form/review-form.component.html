@@ -1,0 +1,82 @@
+<mat-card class="card">
+  <app-review-item
+    *ngIf="isReply"
+    [review]="review"
+    [isReply]="false"
+    [showOnlyComment]="true"
+    [owner]="owner"
+  ></app-review-item>
+
+  <mat-card-header flxLayout="row" fxLayoutAlign="center">
+    <mat-card-title class="card__title" *ngIf="mode === 'create'">
+      Restaurant Review
+    </mat-card-title>
+
+    <mat-card-title class="card__title" *ngIf="mode === 'edit'"> Edit Review </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form fxLayout="column" [formGroup]="form" (ngSubmit)="onSubmit()" class="card__form">
+      <!-- Mode: reply -->
+      <mat-form-field class="card__reply card__item" *ngIf="isReply">
+        <textarea rows="5" matInput type="text" placeholder="Reply" formControlName="reply">
+        </textarea>
+
+        <mat-error *ngIf="reply?.invalid && (reply?.dirty || reply?.touched)">
+          <div *ngIf="reply?.errors?.minlength">
+            <span class="text-danger">*</span> Your reply is too short
+          </div>
+          <div *ngIf="reply?.errors?.maxlength && reply?.value?.length > 0">
+            <span class="text-danger">*</span> Your reply is too long
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Mode: review -->
+      <mat-form-field class="card__comment card__item" *ngIf="!isReply">
+        <textarea rows="5" matInput type="text" placeholder="Comment" formControlName="comment">
+        </textarea>
+
+        <mat-error *ngIf="comment?.invalid && (comment?.dirty || comment?.touched)">
+          <div *ngIf="comment?.errors?.minlength">
+            <span class="text-danger">*</span> Your comment is too short
+          </div>
+          <div *ngIf="comment?.errors?.maxlength && comment?.value?.length > 0">
+            <span class="text-danger">*</span> Your comment is too long
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- mode: review -->
+      <div class="card__address card__item" *ngIf="!isReply">
+        <input type="hidden" formControlName="rating" />
+        <label>Rating </label>
+        <app-star-rating
+          [rating]="stars"
+          [starCount]="5"
+          [color]="'accent'"
+          [presentOnly]="false"
+          (ratingUpdated)="onRatingUpdated($event)"
+        ></app-star-rating>
+      </div>
+
+      <div class="card__extra">
+        <div fxLayout="row" fxLayoutAlign="center">
+          <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutGap="15px">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="showSpinner || form.invalid || !form.dirty"
+        >
+          <span *ngIf="mode === 'create'">Create</span>
+          <span *ngIf="mode === 'edit'">Update</span>
+        </button>
+      </div>
+    </form>
+    <br />
+  </mat-card-content>
+</mat-card>

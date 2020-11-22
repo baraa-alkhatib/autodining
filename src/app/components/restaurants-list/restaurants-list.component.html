@@ -13,11 +13,13 @@
   >
     <div>No Restaurats were found!</div>
   </div>
-  <div fxLayout="row" fxLayoutAlign="end center" class="header__new">
-    <a mat-button color="primary" class="header__new__link" routerLink="/restaurants/new">
-      <mat-icon>add_circle</mat-icon> Restaurant
-    </a>
-  </div>
+  <ng-container *ngIf="(user$ | async)?.type == 'owner'">
+    <div fxLayout="row" fxLayoutAlign="end center" class="header__new">
+      <a mat-button color="primary" class="header__new__link" routerLink="/restaurants/new">
+        <mat-icon>add_circle</mat-icon> Restaurant
+      </a>
+    </div>
+  </ng-container>
 </div>
 
 <div class="restaurants-list">

@@ -28,7 +28,7 @@ router.post(
   upload('image'),
   createRestaurant,
   (req, res) => {
-    res.status(200).json({ newImageUrl: res.locals.imageUrl });
+    res.status(200).json({ restaurant: res.locals.restaurant });
   }
 );
 

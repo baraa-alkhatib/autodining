@@ -18,7 +18,7 @@ export class AppComponent implements OnDestroy {
    * it's mainly used to clean up subscriptions after the component is destroyed
    * @private
    * @type {Subscription[]}
-   * @memberof SignupFormComponent
+   * @memberof AppComponent
    */
   private readonly _subscriptions$!: Subscription[];
 
@@ -73,7 +73,7 @@ export class AppComponent implements OnDestroy {
 
   /**
    * Clean up subscriptions when component is destroyed
-   * @memberof SignupFormComponent
+   * @memberof AppComponent
    */
   public ngOnDestroy(): void {
     this._subscriptions$.forEach((sub) => {

@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * it's mainly used to clean up subscriptions after the component is destroyed
    * @private
    * @type {Subscription[]}
-   * @memberof SignupFormComponent
+   * @memberof HeaderComponent
    */
   private readonly _subscriptions$!: Subscription[];
 
@@ -77,6 +77,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.openLogoutDialog = new EventEmitter();
 
     this.toggleFilterBottomSheet = new EventEmitter();
+
+    // initialize
+    this.user$ = this._authServ.user$;
   }
 
   public ngOnInit() {
@@ -93,8 +96,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // listen to login events to reflect status in the ui
     this._subscriptions$.push(
       this._authServ.isLoggedIn$.subscribe((isLoggedIn) => {
-        this.user$ = this._authServ.user$;
-
         this.isLoggedIn = isLoggedIn;
       })
     );
@@ -134,7 +135,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   /**
    * Clean up subscriptions when component is destroyed
-   * @memberof SignupFormComponent
+   * @memberof HeaderComponent
    */
   public ngOnDestroy(): void {
     this._subscriptions$.forEach((sub) => {
